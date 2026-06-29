@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- For sharing generated invoice PDFs via FileProvider (WhatsApp / email) -->
+    <cache-path name="invoices_cache" path="invoices/" />
+    <files-path name="invoices" path="invoices/" />
+    <external-files-path name="ext_invoices" path="invoices/" />
+</paths>

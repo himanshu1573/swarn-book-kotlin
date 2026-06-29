@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand palette -->
+    <color name="navy">#1C2B4A</color>
+    <color name="navy_dark">#13203B</color>
+    <color name="gold">#F5C842</color>
+    <color name="gold_dark">#B8860B</color>
+    <color name="gold_light">#FFD700</color>
+    <color name="cream">#FDF8F0</color>
+    <color name="cream_card">#FFFFFF</color>
+    <color name="balance_due">#B83030</color>
+    <color name="paid_success">#2A7A3A</color>
+
+    <color name="text_primary">#1C2B4A</color>
+    <color name="text_secondary">#5A6478</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="divider">#E3DCCE</color>
+</resources>

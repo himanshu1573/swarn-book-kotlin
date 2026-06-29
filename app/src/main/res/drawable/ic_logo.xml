@@ -1,0 +1,10 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp" android:height="120dp"
+    android:viewportWidth="48" android:viewportHeight="48">
+    <!-- Diamond / gem mark in gold -->
+    <path android:fillColor="#F5C842" android:pathData="M12,8h24l8,10 -20,22 -20,-22z"/>
+    <path android:fillColor="#FFD700" android:pathData="M12,8h24l8,10H4z"/>
+    <path android:fillColor="#B8860B" android:pathData="M4,18h40l-20,22z M16,8l-4,10 12,22 12,-22 -4,-10z" android:fillAlpha="0.35"/>
+    <path android:strokeColor="#1C2B4A" android:strokeWidth="0.8" android:fillColor="#00000000"
+        android:pathData="M12,8h24l8,10 -20,22 -20,-22z M4,18h40 M16,8l-4,10 12,22 12,-22 -4,-10"/>
+</vector>

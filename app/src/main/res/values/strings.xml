@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SwarnaBook</string>
+    <string name="tagline">Smart Billing for Every Jeweller</string>
+
+    <!-- Bottom nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_new">New Invoice</string>
+    <string name="nav_history">History</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Dashboard -->
+    <string name="todays_rate">Today\'s Rate</string>
+    <string name="gold_24k_rate">24K Gold (₹/g)</string>
+    <string name="silver_rate">Silver (₹/g)</string>
+    <string name="recent_invoices">Today\'s Invoices</string>
+    <string name="new_invoice">New Invoice</string>
+    <string name="no_invoices_yet">No invoices yet. Tap + to create one.</string>
+
+    <!-- New invoice -->
+    <string name="customer_details">Customer Details</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="invoice_number">Invoice No.</string>
+    <string name="invoice_date">Date</string>
+    <string name="items">Items</string>
+    <string name="add_item">+ Add Item</string>
+    <string name="item_name">Item Name</string>
+    <string name="carat">Carat</string>
+    <string name="rate_per_g">Rate ₹/g</string>
+    <string name="weight_g">Weight (g)</string>
+    <string name="making_pct">Making %</string>
+    <string name="making_flat">Making ₹/g</string>
+    <string name="making_amount">Making ₹</string>
+    <string name="item_total">Total</string>
+    <string name="huid">HUID / Hallmark</string>
+
+    <string name="gold_value">Gold Value</string>
+    <string name="making_charges_total">Making Charges</string>
+    <string name="old_gold_exchange">Old Gold Exchange (−)</string>
+    <string name="gst_3">GST 3% (CGST 1.5% + SGST 1.5%)</string>
+    <string name="round_off">Round Off</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="amount_paid">Amount Paid</string>
+    <string name="balance_due">Balance Due</string>
+    <string name="notes">Notes (advance, exchange details…)</string>
+    <string name="save_invoice">Save Invoice</string>
+    <string name="save_generate_pdf">Save &amp; Generate PDF</string>
+
+    <!-- Invoice view -->
+    <string name="share_pdf">Share PDF</string>
+    <string name="print">Print</string>
+    <string name="mark_as_paid">Mark as Paid</string>
+    <string name="edit_invoice">Edit</string>
+    <string name="send_whatsapp">Send on WhatsApp</string>
+
+    <!-- History -->
+    <string name="search_customer">Search by customer name</string>
+    <string name="filter_dates">Filter by date</string>
+    <string name="delete_invoice_q">Delete invoice?</string>
+    <string name="delete_invoice_msg">This will permanently remove the invoice.</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Settings -->
+    <string name="shop_name">Shop Name</string>
+    <string name="shop_address">Shop Address</string>
+    <string name="gstin">GSTIN</string>
+    <string name="default_making_pct">Default Making Charge %</string>
+    <string name="gst_default_on">GST enabled by default</string>
+    <string name="app_theme">App Theme</string>
+    <string name="theme_gold">Gold</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="save_settings">Save Settings</string>
+</resources>
