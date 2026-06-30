@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.swarnabook.billing.databinding.ActivityMainBinding
@@ -25,7 +25,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        // Get the NavController from the NavHostFragment itself. Calling
+        // findNavController(viewId) directly in onCreate() crashes with a
+        // FragmentContainerView, because the controller isn't attached to the
+        // view yet at this point.
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         val bottomNav: BottomNavigationView = binding.bottomNav
         NavigationUI.setupWithNavController(bottomNav, navController)
 
