@@ -9,20 +9,23 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.swarnabook.billing.R
+import com.swarnabook.billing.SwarnaBookApp
 import com.swarnabook.billing.core.util.CurrencyFormat
 import com.swarnabook.billing.core.util.WhatsAppShare
-import com.swarnabook.billing.data.SampleData
 import com.swarnabook.billing.data.model.Invoice
 import com.swarnabook.billing.databinding.FragmentInvoiceViewBinding
+import kotlinx.coroutines.launch
 
 class InvoiceViewFragment : Fragment() {
 
     private var _binding: FragmentInvoiceViewBinding? = null
     private val binding get() = _binding!!
     private var invoiceId: Long = -1L
+    private var invoice: Invoice? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,7 +36,16 @@ class InvoiceViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         invoiceId = arguments?.getLong("invoiceId", -1L) ?: -1L
-        render()
+
+        // Observed, so "Mark as paid" and edits from other screens redraw automatically.
+        SwarnaBookApp.repo.observeById(invoiceId).observe(viewLifecycleOwner) { inv ->
+            invoice = inv
+            if (inv == null) {
+                Snackbar.make(binding.root, "Invoice not found", Snackbar.LENGTH_SHORT).show()
+            } else {
+                render(inv)
+            }
+        }
 
         if (arguments?.getBoolean("generatePdf", false) == true) {
             Snackbar.make(binding.root,
@@ -46,13 +58,18 @@ class InvoiceViewFragment : Fragment() {
             findNavController().navigate(R.id.action_invoiceView_to_editInvoice, args)
         }
         binding.btnMarkPaid.setOnClickListener {
-            SampleData.markPaid(invoiceId)
-            render()
-            Snackbar.make(binding.root, "Marked as paid", Snackbar.LENGTH_SHORT).show()
+            viewLifecycleOwner.lifecycleScope.launch {
+                SwarnaBookApp.repo.markPaid(invoiceId)
+                if (_binding != null) {
+                    Snackbar.make(binding.root, "Marked as paid", Snackbar.LENGTH_SHORT).show()
+                }
+            }
         }
         binding.btnWhatsapp.setOnClickListener {
-            val inv = SampleData.getById(invoiceId) ?: return@setOnClickListener
-            WhatsAppShare.sendTextToCustomer(requireContext(), inv, SampleData.currentSettings())
+            val inv = invoice ?: return@setOnClickListener
+            WhatsAppShare.sendTextToCustomer(
+                requireContext(), inv, SwarnaBookApp.settings.currentSettings()
+            )
         }
         binding.btnShare.setOnClickListener {
             Snackbar.make(binding.root,
@@ -66,12 +83,8 @@ class InvoiceViewFragment : Fragment() {
         }
     }
 
-    private fun render() {
-        val inv = SampleData.getById(invoiceId) ?: run {
-            Snackbar.make(binding.root, "Invoice not found", Snackbar.LENGTH_SHORT).show()
-            return
-        }
-        val settings = SampleData.currentSettings()
+    private fun render(inv: Invoice) {
+        val settings = SwarnaBookApp.settings.currentSettings()
 
         binding.shopName.text = settings.shopName
         binding.shopAddress.text = settings.shopAddress

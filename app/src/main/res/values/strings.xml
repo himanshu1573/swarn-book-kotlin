@@ -13,6 +13,7 @@
     <string name="todays_rate">Today\'s Rate</string>
     <string name="gold_24k_rate">24K Gold (₹/g)</string>
     <string name="silver_rate">Silver (₹/g)</string>
+    <string name="fetch_live_rate">Fetch Live Rate</string>
     <string name="recent_invoices">Today\'s Invoices</string>
     <string name="new_invoice">New Invoice</string>
     <string name="no_invoices_yet">No invoices yet. Tap + to create one.</string>
@@ -67,6 +68,7 @@
     <string name="shop_address">Shop Address</string>
     <string name="gstin">GSTIN</string>
     <string name="default_making_pct">Default Making Charge %</string>
+    <string name="rate_premium_pct">Local Rate Premium % (duty + GST + dealer)</string>
     <string name="gst_default_on">GST enabled by default</string>
     <string name="app_theme">App Theme</string>
     <string name="theme_gold">Gold</string>

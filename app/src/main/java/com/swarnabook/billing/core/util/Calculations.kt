@@ -1,5 +1,7 @@
 package com.swarnabook.billing.core.util
 
+import com.swarnabook.billing.data.model.Invoice
+import com.swarnabook.billing.data.model.MakingMode
 import kotlin.math.roundToInt
 
 /**
@@ -44,4 +46,41 @@ object Calculations {
     fun calcRoundOff(amount: Double): Double = amount.roundToInt() - amount
 
     fun calcBalanceDue(grandTotal: Double, paid: Double): Double = grandTotal - paid
+
+    /**
+     * Recomputes every derived figure on an invoice from its items and the day's rates.
+     * Pure and side-effect-free apart from mutating the invoice passed in, so both the
+     * live edit screen and the repository can call it before a save.
+     */
+    fun recalculate(inv: Invoice) {
+        var goldValue = 0.0
+        var makingTotal = 0.0
+        for (item in inv.items) {
+            val gv = calcGoldValue(item.weight, item.ratePerGram)
+            val making = when (item.makingMode) {
+                MakingMode.PERCENT -> calcMakingByPercent(gv, item.makingValue)
+                MakingMode.FLAT_PER_GRAM -> calcMakingByFlat(item.weight, item.makingValue)
+            }
+            item.makingAmount = making
+            item.itemTotal = calcItemTotal(gv, making)
+            goldValue += gv
+            makingTotal += making
+        }
+        inv.goldValue = goldValue
+        inv.makingTotal = makingTotal
+
+        val taxable = goldValue + makingTotal - inv.oldGoldExchange
+        if (inv.gstEnabled) {
+            inv.cgst = calcCgst(taxable)
+            inv.sgst = calcSgst(taxable)
+        } else {
+            inv.cgst = 0.0
+            inv.sgst = 0.0
+        }
+        val preRound = taxable + inv.cgst + inv.sgst
+        inv.roundOff = calcRoundOff(preRound)
+        inv.grandTotal = preRound + inv.roundOff
+        inv.balanceDue = calcBalanceDue(inv.grandTotal, inv.amountPaid)
+        inv.paid = inv.balanceDue <= 0.0
+    }
 }

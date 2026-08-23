@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.swarnabook.billing.R
 import com.swarnabook.billing.core.util.CurrencyFormat
+import com.swarnabook.billing.core.util.DateFormats
+import com.swarnabook.billing.data.model.Invoice
 import com.swarnabook.billing.databinding.FragmentNewInvoiceBinding
 import java.util.Calendar
 
@@ -34,9 +36,12 @@ class NewInvoiceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val invoiceId = arguments?.getLong("invoiceId", -1L) ?: -1L
+        // The draft is loaded from the database, so bind the form once it arrives.
+        viewModel.draftReady.observe(viewLifecycleOwner) { draft -> bindDraft(draft) }
         viewModel.initIfNeeded(invoiceId)
-        val draft = viewModel.draft
+    }
 
+    private fun bindDraft(draft: Invoice) {
         // Header / customer fields
         binding.inputInvoiceNumber.setText(draft.invoiceNumber)
         binding.inputDate.setText(draft.date)
@@ -89,10 +94,13 @@ class NewInvoiceFragment : Fragment() {
 
         binding.inputDate.setOnClickListener { showDatePicker() }
 
-        binding.btnSave.setOnClickListener { if (validate()) { viewModel.save(); toastAndBack() } }
+        binding.btnSave.setOnClickListener {
+            if (validate()) viewModel.save { toastAndBack() }
+        }
         binding.btnSavePdf.setOnClickListener {
-            if (validate()) {
-                val id = viewModel.save()
+            if (validate()) viewModel.save { id ->
+                // The save completes asynchronously; the view may already be gone.
+                if (_binding == null) return@save
                 val args = Bundle().apply {
                     putLong("invoiceId", id)
                     putBoolean("generatePdf", true)
@@ -106,6 +114,7 @@ class NewInvoiceFragment : Fragment() {
 
     /** Recompute the whole invoice and update the totals card. */
     private fun refreshTotals() {
+        if (_binding == null) return
         val draft = viewModel.draft
         viewModel.recompute()
         binding.rowGoldValue.value.text = CurrencyFormat.rupees(draft.goldValue)
@@ -131,7 +140,7 @@ class NewInvoiceFragment : Fragment() {
             requireContext(),
             { _, y, m, d ->
                 cal.set(y, m, d)
-                val formatted = com.swarnabook.billing.data.SampleData.dateFormat.format(cal.time)
+                val formatted = DateFormats.invoiceDate.format(cal.time)
                 binding.inputDate.setText(formatted)
                 viewModel.draft.date = formatted
             },
@@ -153,6 +162,7 @@ class NewInvoiceFragment : Fragment() {
     }
 
     private fun toastAndBack() {
+        if (_binding == null) return
         Snackbar.make(binding.root, "Invoice saved", Snackbar.LENGTH_SHORT).show()
         findNavController().navigate(R.id.dashboardFragment)
     }

@@ -52,6 +52,24 @@ class DashboardFragment : Fragment() {
         binding.inputGold.addTextChangedListener(rateWatcher())
         binding.inputSilver.addTextChangedListener(rateWatcher())
 
+        // A live fetch writes to DataStore, so push the new value into the field --
+        // but never overwrite what the shop is currently typing.
+        viewModel.gold24Rate.observe(viewLifecycleOwner) { rate ->
+            syncRateField(binding.inputGold, rate)
+        }
+        viewModel.silverRate.observe(viewLifecycleOwner) { rate ->
+            syncRateField(binding.inputSilver, rate)
+        }
+
+        binding.btnFetchRate.setOnClickListener { viewModel.refreshRates(manual = true) }
+        viewModel.fetching.observe(viewLifecycleOwner) { busy ->
+            binding.btnFetchRate.isEnabled = !busy
+        }
+        viewModel.rateStatus.observe(viewLifecycleOwner) { status ->
+            binding.rateStatus.text = status
+            binding.rateStatus.visibility = if (status.isNullOrBlank()) View.GONE else View.VISIBLE
+        }
+
         binding.fabNewInvoice.setOnClickListener {
             findNavController().navigate(R.id.action_dashboard_to_newInvoice)
         }
@@ -72,6 +90,19 @@ class DashboardFragment : Fragment() {
             viewModel.updateRates(gold, silver)
             rebuildChips()
         }
+    }
+
+    /**
+     * Writes a fetched rate into its input without fighting the user's typing:
+     * the field is only touched when it is not focused and the value really changed.
+     */
+    private fun syncRateField(field: com.google.android.material.textfield.TextInputEditText, rate: Double) {
+        if (field.hasFocus()) return
+        if (field.text.toString().toDoubleOrNull() == rate) return
+        watchersActive = false
+        field.setText(trimNum(rate))
+        watchersActive = true
+        rebuildChips()
     }
 
     /** Derived per-carat chips: 22K/18K/14K from 24K, plus Silver. */

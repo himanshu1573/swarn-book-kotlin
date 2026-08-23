@@ -3,20 +3,42 @@
 **App:** SwarnaBook — native Android jewellery shop billing & invoice app
 **Package:** `com.swarnabook.billing`
 **Repo:** https://github.com/himanshu1573/swarn-book-kotlin
-**Last updated:** 30 June 2026
-**Current phase:** ✅ Frontend complete & running on device · ⏳ Backend (database) not started
+**Last updated:** 23 August 2026
+**Current phase:** ✅ Frontend complete · ✅ Backend (Room + DataStore + live rates) written
+· ⚠️ **NOT YET COMPILED** — Android SDK missing from this Mac
+
+---
+
+## 0. ⚠️ Read first — build environment is broken
+
+The Android SDK that used to live at `~/Library/Android/sdk` is **gone**, and Android Studio
+is not installed. `./gradlew :app:assembleDebug` fails with *SDK location not found*.
+
+Everything in section 3 below was written but **never compiled**. Expect first-build errors.
+
+**To fix:**
+```
+brew install --cask android-studio
+# open it once, let it download SDK 34 + build-tools + platform-tools
+# then point the project at it:
+#   local.properties -> sdk.dir=/Users/himanshup/Library/Android/sdk
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
+./gradlew :app:assembleDebug
+```
 
 ---
 
 ## 1. Quick summary (read this first next time)
 
-We have built the **entire frontend (UI)** of the app in Kotlin. It compiles, installs,
-and runs on a real phone (tested on Realme RMX3868, Android 14). Every screen is clickable
-and the billing math works live.
+The **frontend** is complete and was verified running on a real phone (Realme RMX3868,
+Android 14) back in June.
 
-**The one thing NOT done yet:** data is not saved permanently. Right now invoices live in
-the phone's memory (RAM) and disappear when the app is fully closed. Making data permanent
-is the **next phase** (the on-device Room database).
+The **backend** — Room database, DataStore settings, and live metal rates — is now written
+(section 3), so invoices should survive an app restart. But it has **never been compiled**,
+because the Android SDK is missing from this Mac (section 0). Treat it as unverified until
+it builds and you have created an invoice, force-closed the app, and seen it come back.
+
+**Still genuinely missing:** PDF generation, so Share PDF and Print remain placeholders.
 
 ---
 
@@ -55,17 +77,45 @@ is the **next phase** (the on-device Room database).
 
 ---
 
-## 3. What is NOT done yet ⏳ (the backend phase)
+## 3. Backend phase — written 23 Aug 2026 (unverified, see section 0)
 
-1. **Room database** — save invoices permanently on the phone (offline, free, no server).
-   *(The Room library is already added to Gradle — just not connected to screens yet.)*
-2. **DataStore** — make Settings persist.
-3. **PDF generation** (`PdfGenerator.kt`) — then the **Share PDF** and **Print** buttons
-   will work, and WhatsApp can attach the PDF.
-4. Wire WhatsApp PDF attachment via FileProvider (FileProvider already declared in manifest).
+### Room (invoices now persist)
+- `data/model/Models.kt` — `Invoice` and `InvoiceItem` are Room `@Entity` classes.
+  Items are a separate table with an `ON DELETE CASCADE` foreign key, so `Invoice.items`
+  is `@Ignore`d and sits **outside the constructor** — which means `copy()` does NOT
+  carry items. Use `copyDeep()`.
+- `data/local/` — `AppDatabase` (v1), `InvoiceDao`, `Converters` (MakingMode enum).
+- `data/InvoiceRepository.kt` — replaces the deleted `SampleData`. Reads are a Flow
+  exposed as LiveData; writes are `suspend`.
+- Invoice numbers come from `MAX(id) + 1`, not a count, so a deletion can never reissue
+  a number already on a printed bill.
 
-> **Stubs to know about:** Share PDF and Print buttons currently show a small message
-> ("comes in backend phase"). That is expected, not a bug.
+### DataStore (settings + rates persist)
+- `data/SettingsStore.kt` — shop details, defaults, theme, and the day's metal rates.
+  Loaded once at app start via `warmUpBlocking()` so screens can read synchronously.
+
+### Live metal rates (goldprice.dev)
+- `data/remote/GoldPriceApi.kt` — one `/v1/carat` call (all karats, INR/gram) plus one
+  `/v1/spot/XAG-INR-SPOT` call = **2 calls per refresh**.
+- `data/remote/RateQuotaStore.kt` — persistent spend ledger for the 1,000 calls/month
+  free tier: monthly cap 960, daily cap 30, 3h auto interval / 15min manual cooldown.
+  Budget lands at ~496 calls/month.
+- `data/RateRepository.kt` — applies the shop's **rate premium %** to spot.
+
+> ⚠️ **The API returns international SPOT, not the Indian counter rate.** On 23 Aug 2026
+> spot 24K was ₹14,161.93/g while Indian retail was ≈ ₹16,780/g — an ~18% gap from import
+> duty, GST and dealer premium. Set *Settings → Local Rate Premium %* or the fetched rate
+> will underprice every bill. The rate stays hand-editable by design.
+
+**API key:** lives in `local.properties` as `goldApiKey=...` (gitignored) and reaches the
+code via `BuildConfig.GOLD_API_KEY`. **Never hardcode it — this repo is public.**
+
+## 3b. What is still NOT done ⏳
+
+1. **PDF generation** (`PdfGenerator.kt`) — **Share PDF** and **Print** still show a
+   placeholder message. That is expected, not a bug.
+2. WhatsApp PDF attachment via FileProvider (FileProvider already declared in manifest).
+3. No tests yet — `Calculations.recalculate()` is pure and is the obvious first unit test.
 
 ---
 
@@ -96,17 +146,22 @@ com.swarnabook.billing/
 │   ├── CurrencyFormat.kt       ₹ Indian formatting (1,00,000)
 │   └── WhatsAppShare.kt        Free WhatsApp sending
 ├── data/
-│   ├── model/Models.kt         Invoice, InvoiceItem, ShopSettings, Carat
-│   └── SampleData.kt           ⚠️ TEMPORARY in-memory store (replace with Room next)
+│   ├── model/Models.kt         Invoice/InvoiceItem @Entity, ShopSettings, Carat
+│   ├── local/                  AppDatabase, InvoiceDao, Converters
+│   ├── remote/                 GoldPriceApi, RateQuotaStore
+│   ├── InvoiceRepository.kt    Room-backed store (replaced SampleData)
+│   ├── SettingsStore.kt        DataStore settings + metal rates
+│   └── RateRepository.kt       Live rate fetch + quota + premium
 └── ui/
     ├── splash/  dashboard/  newinvoice/  invoiceview/  history/  settings/
         (each: Fragment + ViewModel + Adapter where needed)
 res/  → layouts, colors, theme, drawables, icons, navigation graph
 ```
 
-**Most important file for the next phase:** `data/SampleData.kt`. It deliberately mimics the
-API a real database repository will have (same function names like `upsert`, `getById`,
-`delete`, `invoicesLive`). So swapping it for Room should NOT require changing the screens.
+**Note on the old plan:** the handover claimed swapping Room in would need no screen
+changes. That was optimistic — `SampleData` was synchronous, Room is `suspend`, so the
+ViewModels gained `viewModelScope.launch` and `NewInvoiceFragment` now binds its form from
+a `draftReady` observer instead of directly in `onViewCreated`.
 
 ---
 
@@ -153,13 +208,11 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 
 ## 8. Resume checklist for next session
 
-When we continue, the plan (in order):
-1. [ ] Create Room entities from `data/model/Models.kt` (Invoice + InvoiceItem relation, ShopSettings)
-2. [ ] Build DAOs (InvoiceDao, InvoiceItemDao) + AppDatabase
-3. [ ] Create `InvoiceRepository` with the same API `SampleData` exposes
-4. [ ] Swap screens from `SampleData` to the repository (minimal changes)
-5. [ ] Persist Settings with DataStore
-6. [ ] Build `PdfGenerator.kt` → enable Share PDF + Print + WhatsApp PDF attachment
-7. [ ] Test on phone, commit, push
+1. [ ] Install Android Studio, let it fetch SDK 34, fix `sdk.dir` in `local.properties`
+2. [ ] `./gradlew :app:assembleDebug` — **fix the first-build errors** (Room/KSP most likely)
+3. [ ] Install on phone, create an invoice, force-close the app, reopen — it must still be there
+4. [ ] Set *Settings → Local Rate Premium %*, then tap **Fetch Live Rate** on the dashboard
+5. [ ] Build `PdfGenerator.kt` → enable Share PDF + Print + WhatsApp PDF attachment
+6. [ ] Add unit tests for `Calculations`, commit, push
 
-**To resume, just say:** "Let's start the backend phase" (or "continue from the doc").
+**To resume, just say:** "continue from the doc"._

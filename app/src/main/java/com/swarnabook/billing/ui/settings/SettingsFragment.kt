@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.swarnabook.billing.R
-import com.swarnabook.billing.data.SampleData
+import com.swarnabook.billing.SwarnaBookApp
 import com.swarnabook.billing.data.model.AppTheme
 import com.swarnabook.billing.data.model.ShopSettings
 import com.swarnabook.billing.databinding.FragmentSettingsBinding
@@ -25,12 +25,13 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val s = SampleData.currentSettings()
+        val s = SwarnaBookApp.settings.currentSettings()
         binding.inputShopName.setText(s.shopName)
         binding.inputShopAddress.setText(s.shopAddress)
         binding.inputShopPhone.setText(s.shopPhone)
         binding.inputGstin.setText(s.gstin)
         binding.inputDefaultMaking.setText(trimNum(s.defaultMakingPct))
+        binding.inputRatePremium.setText(trimNum(s.ratePremiumPct))
         binding.switchGstDefault.isChecked = s.gstEnabledDefault
         binding.themeGroup.check(
             when (s.theme) {
@@ -55,10 +56,11 @@ class SettingsFragment : Fragment() {
             shopPhone = binding.inputShopPhone.text.toString().trim(),
             gstin = binding.inputGstin.text.toString().trim(),
             defaultMakingPct = binding.inputDefaultMaking.text.toString().toDoubleOrNull() ?: 0.0,
+            ratePremiumPct = binding.inputRatePremium.text.toString().toDoubleOrNull() ?: 0.0,
             gstEnabledDefault = binding.switchGstDefault.isChecked,
             theme = theme
         )
-        SampleData.saveSettings(updated)
+        SwarnaBookApp.settings.saveSettings(updated)
         Snackbar.make(binding.root, "Settings saved", Snackbar.LENGTH_SHORT).show()
     }
 

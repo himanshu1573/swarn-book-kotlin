@@ -1,3 +1,13 @@
+import java.util.Properties
+
+// The goldprice.dev key lives in local.properties (gitignored) and is injected as a
+// BuildConfig field, so it never lands in version control.
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -16,6 +26,9 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables { useSupportLibrary true }
+
+        buildConfigField "String", "GOLD_API_KEY",
+                "\"${localProps.getProperty('goldApiKey', '')}\""
     }
 
     buildTypes {
@@ -34,6 +47,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 

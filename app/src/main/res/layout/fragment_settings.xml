@@ -80,6 +80,16 @@
                         android:inputType="numberDecimal" android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.SwarnaBook.TextInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" android:hint="@string/rate_premium_pct">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputRatePremium"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/switchGstDefault"
                     android:layout_width="match_parent"

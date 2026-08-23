@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swarnabook.billing.R
-import com.swarnabook.billing.data.SampleData
+import com.swarnabook.billing.core.util.DateFormats
 import com.swarnabook.billing.databinding.FragmentHistoryBinding
 import com.swarnabook.billing.ui.common.InvoiceAdapter
 
@@ -69,8 +69,8 @@ class HistoryFragment : Fragment() {
             val end = range.second
             if (start != null && end != null) {
                 viewModel.setDateRange(start, end)
-                val s = SampleData.dateFormat.format(start)
-                val e = SampleData.dateFormat.format(end)
+                val s = DateFormats.format(start)
+                val e = DateFormats.format(end)
                 binding.filterLabel.text = "$s – $e   ✕  (tap to clear)"
                 binding.filterLabel.visibility = View.VISIBLE
             }
