@@ -17,7 +17,8 @@ clickable. Swapping in Room/DataStore is a drop-in replacement — the screens w
 
 ## Features
 - Splash → Dashboard → New Invoice → Invoice View → History → Settings
-- Live metal-rate card with auto-derived carat rates (24K/22K/18K/14K/Silver)
+- Live metal-rate card: goldprice.dev spot → Uttar Pradesh counter rate (customs duty +
+  local premium, ex-GST), auto-derived carat rates (24K/22K/18K/14K/Silver)
 - Dynamic invoice item rows with live totals
 - Old-gold exchange, % or ₹/g making charges, HUID, CGST/SGST split, round-off
 - Free WhatsApp delivery via deep link (zero cost, no Business API needed)

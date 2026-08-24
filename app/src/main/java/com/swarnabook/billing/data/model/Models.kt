@@ -7,6 +7,7 @@ import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.swarnabook.billing.core.util.IndianRate
 
 /**
  * Room entities for invoices, plus the plain settings model.
@@ -102,16 +103,23 @@ data class InvoiceWithItems(
 
 data class ShopSettings(
     var shopName: String = "Shri Swarna Jewellers",
-    var shopAddress: String = "123 Bazaar Road, Jaipur, Rajasthan",
+    var shopAddress: String = "Chowk Sarafa Bazaar, Lucknow, Uttar Pradesh",
     var shopPhone: String = "+91 98765 43210",
-    var gstin: String = "08ABCDE1234F1Z5",
+    /** State code 09 = Uttar Pradesh. */
+    var gstin: String = "09ABCDE1234F1Z5",
     var defaultMakingPct: Double = 12.0,
     /**
-     * Percent added on top of international spot to reach the local counter rate
-     * (import duty + GST + dealer premium). Zero until the shop sets its own figure,
-     * so a fetched rate is never silently inflated.
+     * Customs duty (BCD + AIDC) added to international spot to reach the landed India
+     * price. See [IndianRate] for the derivation and current statutory figure.
      */
-    var ratePremiumPct: Double = 0.0,
+    var importDutyPct: Double = IndianRate.DEFAULT_IMPORT_DUTY_PCT,
+    /**
+     * Uttar Pradesh sarafa premium on GOLD over the landed price, ex-GST. GST is never
+     * part of the rate — it is added on the bill by Calculations.
+     */
+    var ratePremiumPct: Double = IndianRate.DEFAULT_UP_GOLD_PREMIUM_PCT,
+    /** Same as [ratePremiumPct] but for SILVER, which carries a larger local premium. */
+    var silverPremiumPct: Double = IndianRate.DEFAULT_UP_SILVER_PREMIUM_PCT,
     var gstEnabledDefault: Boolean = true,
     var theme: AppTheme = AppTheme.GOLD
 )

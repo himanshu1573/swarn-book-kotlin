@@ -40,7 +40,9 @@ class SettingsStore(context: Context, private val scope: CoroutineScope) {
         val SHOP_PHONE = stringPreferencesKey("shop_phone")
         val GSTIN = stringPreferencesKey("gstin")
         val DEFAULT_MAKING_PCT = doublePreferencesKey("default_making_pct")
+        val IMPORT_DUTY_PCT = doublePreferencesKey("import_duty_pct")
         val RATE_PREMIUM_PCT = doublePreferencesKey("rate_premium_pct")
+        val SILVER_PREMIUM_PCT = doublePreferencesKey("silver_premium_pct")
         val GST_DEFAULT = booleanPreferencesKey("gst_enabled_default")
         val THEME = stringPreferencesKey("theme")
         val GOLD_24_RATE = doublePreferencesKey("gold_24_rate")
@@ -55,7 +57,9 @@ class SettingsStore(context: Context, private val scope: CoroutineScope) {
             shopPhone = this[Keys.SHOP_PHONE] ?: fallback.shopPhone,
             gstin = this[Keys.GSTIN] ?: fallback.gstin,
             defaultMakingPct = this[Keys.DEFAULT_MAKING_PCT] ?: fallback.defaultMakingPct,
+            importDutyPct = this[Keys.IMPORT_DUTY_PCT] ?: fallback.importDutyPct,
             ratePremiumPct = this[Keys.RATE_PREMIUM_PCT] ?: fallback.ratePremiumPct,
+            silverPremiumPct = this[Keys.SILVER_PREMIUM_PCT] ?: fallback.silverPremiumPct,
             gstEnabledDefault = this[Keys.GST_DEFAULT] ?: fallback.gstEnabledDefault,
             theme = this[Keys.THEME]?.let { name ->
                 runCatching { AppTheme.valueOf(name) }.getOrDefault(fallback.theme)
@@ -112,7 +116,9 @@ class SettingsStore(context: Context, private val scope: CoroutineScope) {
                 prefs[Keys.SHOP_PHONE] = settings.shopPhone
                 prefs[Keys.GSTIN] = settings.gstin
                 prefs[Keys.DEFAULT_MAKING_PCT] = settings.defaultMakingPct
+                prefs[Keys.IMPORT_DUTY_PCT] = settings.importDutyPct
                 prefs[Keys.RATE_PREMIUM_PCT] = settings.ratePremiumPct
+                prefs[Keys.SILVER_PREMIUM_PCT] = settings.silverPremiumPct
                 prefs[Keys.GST_DEFAULT] = settings.gstEnabledDefault
                 prefs[Keys.THEME] = settings.theme.name
             }
@@ -131,8 +137,11 @@ class SettingsStore(context: Context, private val scope: CoroutineScope) {
     }
 
     companion object {
-        /** Only used until the shop enters its own rate for the first time. */
-        const val DEFAULT_GOLD_24 = 7245.0
-        const val DEFAULT_SILVER = 92.0
+        /**
+         * Only used until the shop enters its own rate or the first live fetch lands.
+         * Lucknow counter rates, ex-GST, 25 Aug 2026 (goodreturns.in).
+         */
+        const val DEFAULT_GOLD_24 = 16412.0
+        const val DEFAULT_SILVER = 260.0
     }
 }

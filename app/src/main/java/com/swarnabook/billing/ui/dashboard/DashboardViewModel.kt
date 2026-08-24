@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.swarnabook.billing.SwarnaBookApp
 import com.swarnabook.billing.core.util.CurrencyFormat
 import com.swarnabook.billing.core.util.DateFormats
+import com.swarnabook.billing.core.util.IndianRate
 import com.swarnabook.billing.data.RateRepository
 import com.swarnabook.billing.data.model.Invoice
 import kotlinx.coroutines.launch
@@ -38,8 +39,8 @@ class DashboardViewModel : ViewModel() {
     val fetching: LiveData<Boolean> = _fetching
 
     init {
-        // Automatic refresh on app open. Silently does nothing if the 3-hour interval
-        // has not elapsed or the quota is spent, so it costs at most 8 refreshes a day.
+        // Automatic refresh on app open. Silently does nothing if the 5-hour interval
+        // has not elapsed or the quota is spent, so it costs about 5 refreshes a day.
         refreshRates(manual = false)
     }
 
@@ -49,19 +50,23 @@ class DashboardViewModel : ViewModel() {
         viewModelScope.launch {
             when (val outcome = rates.refresh(manual)) {
                 is RateRepository.Outcome.Updated -> {
-                    val premiumNote = if (outcome.premiumPct > 0) {
-                        " (spot ${CurrencyFormat.rupeesWhole(outcome.spotGold24)} + ${trim(outcome.premiumPct)}%)"
-                    } else {
-                        " — spot only, set a premium % in Settings"
-                    }
+                    // Show the shop exactly how the UP counter rate was built from spot.
+                    val premiumNote = if (outcome.premiumPct != 0.0) {
+                        " + ${trim(outcome.premiumPct)}% UP premium"
+                    } else ""
+                    val silverNote = if (outcome.silverLive) "" else " · silver kept manual"
                     _rateStatus.value =
-                        "Updated$premiumNote · ${outcome.monthRemaining} lookups left this month"
+                        "24K ${CurrencyFormat.rupeesWhole(outcome.gold24)}/g · " +
+                        "${CurrencyFormat.rupeesWhole(IndianRate.per10Grams(outcome.gold24))}/10g " +
+                        "(spot ${CurrencyFormat.rupeesWhole(outcome.spotGold24)} + " +
+                        "${trim(outcome.importDutyPct)}% duty$premiumNote, ex-GST)$silverNote · " +
+                        "${outcome.monthRemaining} lookups left this month"
                 }
                 // A skipped automatic refresh is normal; only say so when asked directly.
                 is RateRepository.Outcome.Skipped ->
                     if (manual) _rateStatus.value = outcome.reason
                 is RateRepository.Outcome.Failed ->
-                    _rateStatus.value = "Rate lookup failed — enter it by hand."
+                    _rateStatus.value = "Rate lookup failed, enter it by hand — ${outcome.reason.take(90)}"
             }
             _fetching.value = false
         }

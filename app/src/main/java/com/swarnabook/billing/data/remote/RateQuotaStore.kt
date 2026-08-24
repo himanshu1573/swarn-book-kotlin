@@ -19,11 +19,11 @@ private val Context.rateQuotaDataStore: DataStore<Preferences> by
 /**
  * Spend ledger for the goldprice.dev free tier (1,000 calls/month).
  *
- * Budget, given one refresh costs [GoldPriceApi.CALLS_PER_REFRESH] = 2 calls:
+ * Budget, given one refresh costs [GoldPriceApi.CALLS_PER_REFRESH] = 1 call:
  *
- *   auto-refresh every 3h  ->  8 refreshes/day  ->  16 calls/day  ->  ~496 calls/month
+ *   auto-refresh every 5h  ->  ~5 refreshes/day  ->  ~5 calls/day  ->  ~150 calls/month
  *
- * That is roughly half the allowance, leaving room for manual refreshes. Three
+ * That is a sixth of the allowance, leaving ample room for manual refreshes. Three
  * independent limits are enforced so no combination of app restarts, manual taps or a
  * long month can overrun the plan:
  *
@@ -115,7 +115,7 @@ class RateQuotaStore(context: Context) {
         /** 1000 / 31 days = 32.2; rounded down to 30. */
         const val DAILY_CAP = 30
 
-        const val AUTO_INTERVAL_MS = 3L * 60 * 60 * 1000      // 3 hours
+        const val AUTO_INTERVAL_MS = 5L * 60 * 60 * 1000      // 5 hours
         const val MANUAL_MIN_INTERVAL_MS = 15L * 60 * 1000    // 15 minutes
 
         private val MONTH_FMT = SimpleDateFormat("yyyy-MM", Locale.US)

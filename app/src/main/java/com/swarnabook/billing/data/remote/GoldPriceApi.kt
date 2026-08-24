@@ -8,58 +8,77 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 /**
- * Thin client for goldprice.dev.
+ * Metal rate lookup.
  *
- * Deliberately built on HttpURLConnection rather than Retrofit/OkHttp: the app makes two
- * GET requests a few times a day, so a networking stack would be dead weight in the APK.
+ * Deliberately built on HttpURLConnection rather than Retrofit/OkHttp: the app makes a
+ * handful of GETs a day, so a networking stack would be dead weight in the APK.
  *
- * IMPORTANT: these are INTERNATIONAL SPOT prices converted to INR. They are NOT the
- * Indian retail counter rate, which additionally carries import duty, GST and the local
- * dealer premium (roughly 15-20% above spot). Apply the shop's premium before billing —
- * see RateRepository.
+ * Two providers, on purpose:
+ *
+ *  - GOLD comes from goldprice.dev `/v1/carat`, which returns every karat in INR/gram in
+ *    one call. This is the keyed provider and the only one that spends the 1,000/month
+ *    free-tier quota (see [RateQuotaStore]).
+ *  - SILVER comes from the keyless api.gold-api.com + an FX rate, because goldprice.dev
+ *    answers XAG-INR-SPOT with HTTP 403 `plan_gated` on the free tier. These endpoints
+ *    need no key and do NOT count against the quota.
+ *
+ * IMPORTANT: both are INTERNATIONAL SPOT prices, NOT the Uttar Pradesh counter rate,
+ * which additionally carries customs duty (15% since May 2026) and the local sarafa
+ * premium. RateRepository applies both via IndianRate before anything is billed.
  */
 object GoldPriceApi {
 
-    private const val BASE = "https://api.goldprice.dev/v1"
+    private const val GOLD_BASE = "https://api.goldprice.dev/v1"
+    private const val SILVER_URL = "https://api.gold-api.com/price/XAG"
+    private const val FX_URL = "https://open.er-api.com/v6/latest/USD"
+
     private const val TIMEOUT_MS = 12_000
     private const val TROY_OUNCE_IN_GRAMS = 31.1034768
 
-    /** Spot metal rates in INR per gram, before any shop premium. */
+    /** Spot rates in INR per gram, before any shop premium. */
     data class SpotRates(
         val gold24PerGram: Double,
-        val silverPerGram: Double,
+        /** Null when the keyless silver lookup failed; gold is still usable. */
+        val silverPerGram: Double?,
         val computedAt: String?
     )
 
     /**
-     * One carat call (all gold karats in INR/gram) plus one silver spot call.
-     * Costs [CALLS_PER_REFRESH] against the monthly quota.
+     * Only the gold call is metered. A 5-hour refresh is ~5 calls/day, ~150/month --
+     * well inside the 1,000 allowance.
      */
-    const val CALLS_PER_REFRESH = 2
+    const val CALLS_PER_REFRESH = 1
 
     suspend fun fetchRates(apiKey: String): Result<SpotRates> = withContext(Dispatchers.IO) {
         runCatching {
-            val carat = JSONObject(get("$BASE/carat?currency=INR&unit=gram", apiKey))
-            val gold24 = carat.getString("price_gram_24k").toDouble()
-
-            // Silver comes back per troy ounce, so convert to grams.
-            val silverJson = JSONObject(get("$BASE/spot/XAG-INR-SPOT", apiKey))
-            val silverPerGram = silverJson.getString("price").toDouble() / TROY_OUNCE_IN_GRAMS
+            // Gold is required: if this throws, the whole refresh fails.
+            val carat = JSONObject(get("$GOLD_BASE/carat?currency=INR&unit=gram", apiKey))
 
             SpotRates(
-                gold24PerGram = gold24,
-                silverPerGram = silverPerGram,
-                computedAt = carat.optString("timestamp", null)
+                gold24PerGram = carat.getString("price_gram_24k").toDouble(),
+                // Silver is best-effort. A failure here must not cost the shop its gold
+                // rate, so it degrades to null and the typed silver value is kept.
+                silverPerGram = runCatching { fetchSilverPerGramInr() }.getOrNull(),
+                computedAt = carat.optString("timestamp").takeIf { it.isNotBlank() }
             )
         }
     }
 
-    private fun get(url: String, apiKey: String): String {
+    /** XAG is quoted in USD per troy ounce, so convert to INR per gram. */
+    private fun fetchSilverPerGramInr(): Double {
+        val silverUsdPerOunce = JSONObject(get(SILVER_URL, null)).getDouble("price")
+        val usdToInr = JSONObject(get(FX_URL, null))
+            .getJSONObject("rates").getDouble("INR")
+        return silverUsdPerOunce * usdToInr / TROY_OUNCE_IN_GRAMS
+    }
+
+    /** @param apiKey null for the keyless endpoints. */
+    private fun get(url: String, apiKey: String?): String {
         val conn = (URL(url).openConnection() as HttpURLConnection).apply {
             requestMethod = "GET"
             connectTimeout = TIMEOUT_MS
             readTimeout = TIMEOUT_MS
-            setRequestProperty("X-API-Key", apiKey)
+            if (apiKey != null) setRequestProperty("X-API-Key", apiKey)
             setRequestProperty("Accept", "application/json")
         }
         try {
@@ -67,7 +86,7 @@ object GoldPriceApi {
             val body = (if (code in 200..299) conn.inputStream else conn.errorStream)
                 ?.bufferedReader()?.use(BufferedReader::readText).orEmpty()
             if (code !in 200..299) {
-                throw IllegalStateException("goldprice.dev HTTP $code: ${body.take(200)}")
+                throw IllegalStateException("HTTP $code: ${body.take(160)}")
             }
             return body
         } finally {

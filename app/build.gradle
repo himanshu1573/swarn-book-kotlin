@@ -1,18 +1,18 @@
 import java.util.Properties
 
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.devtools.ksp'
+}
+
 // The goldprice.dev key lives in local.properties (gitignored) and is injected as a
 // BuildConfig field, so it never lands in version control.
 def localProps = new Properties()
 def localPropsFile = rootProject.file("local.properties")
 if (localPropsFile.exists()) {
     localPropsFile.withInputStream { localProps.load(it) }
-}
-
-plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'androidx.navigation.safeargs.kotlin'
-    id 'com.google.devtools.ksp'
 }
 
 android {

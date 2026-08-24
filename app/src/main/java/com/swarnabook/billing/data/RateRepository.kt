@@ -1,18 +1,19 @@
 package com.swarnabook.billing.data
 
+import com.swarnabook.billing.core.util.IndianRate
 import com.swarnabook.billing.data.remote.GoldPriceApi
 import com.swarnabook.billing.data.remote.RateQuotaStore
 import kotlin.math.round
 
 /**
- * Turns goldprice.dev spot prices into the rate the shop actually bills at, while
- * staying inside the free plan's 1,000 calls/month (see [RateQuotaStore]).
+ * Turns goldprice.dev spot prices into the Uttar Pradesh counter rate the shop actually
+ * bills at, while staying inside the free plan's 1,000 calls/month (see [RateQuotaStore]).
  *
- * The API returns international spot converted to INR. Indian counter rates run roughly
- * 15-20% higher once import duty, GST and the local dealer premium are added, so the
- * fetched figure is multiplied by the shop's own premium % from Settings before it is
- * written to the rate card. The rate always stays hand-editable — a stale or wrong
- * fetch must never silently mis-price a real bill.
+ * The API returns international spot converted to INR. [IndianRate] adds the customs
+ * duty and the UP local premium from Settings to reach the ex-GST counter rate (GST is
+ * applied on the bill, not here). On 25 Aug 2026 that reproduced the published Lucknow
+ * 24K rate to within ₹1/g. The rate always stays hand-editable — a stale or wrong fetch
+ * must never silently mis-price a real bill.
  */
 class RateRepository(
     private val quota: RateQuotaStore,
@@ -25,7 +26,9 @@ class RateRepository(
         data class Updated(
             val gold24: Double,
             val silver: Double,
+            val silverLive: Boolean,
             val spotGold24: Double,
+            val importDutyPct: Double,
             val premiumPct: Double,
             val monthRemaining: Int
         ) : Outcome()
@@ -55,18 +58,24 @@ class RateRepository(
             return Outcome.Failed(it.message ?: "Could not reach the rate service")
         }
 
-        val premiumPct = settings.currentSettings().ratePremiumPct
-        val factor = 1.0 + (premiumPct / 100.0)
-        val gold = round2(spot.gold24PerGram * factor)
-        val silver = round2(spot.silverPerGram * factor)
+        val s = settings.currentSettings()
+        // Whole rupees per gram, the way a sarafa board quotes it.
+        val gold = IndianRate.counterPerGramRounded(spot.gold24PerGram, s.importDutyPct, s.ratePremiumPct)
+        // Silver comes from a keyless provider that can fail on its own; falling back to
+        // the typed value keeps a silver outage from wiping the shop's rate.
+        val silver = spot.silverPerGram
+            ?.let { IndianRate.counterPerGramRounded(it, s.importDutyPct, s.silverPremiumPct) }
+            ?: settings.currentSilver()
 
         settings.setRates(gold, silver)
 
         return Outcome.Updated(
             gold24 = gold,
             silver = silver,
+            silverLive = spot.silverPerGram != null,
             spotGold24 = round2(spot.gold24PerGram),
-            premiumPct = premiumPct,
+            importDutyPct = s.importDutyPct,
+            premiumPct = s.ratePremiumPct,
             monthRemaining = quota.snapshot(now).monthRemaining
         )
     }

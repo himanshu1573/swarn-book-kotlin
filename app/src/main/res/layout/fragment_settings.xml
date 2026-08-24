@@ -80,12 +80,40 @@
                         android:inputType="numberDecimal" android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/live_rate_section"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.SwarnaBook.TextInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" android:hint="@string/import_duty_pct">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputImportDuty"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="8dp" android:hint="@string/rate_premium_pct">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputRatePremium"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.SwarnaBook.TextInput"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" android:hint="@string/silver_premium_pct">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputSilverPremium"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:inputType="numberDecimal" android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>

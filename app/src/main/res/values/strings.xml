@@ -68,7 +68,10 @@
     <string name="shop_address">Shop Address</string>
     <string name="gstin">GSTIN</string>
     <string name="default_making_pct">Default Making Charge %</string>
-    <string name="rate_premium_pct">Local Rate Premium % (duty + GST + dealer)</string>
+    <string name="live_rate_section">Live Rate → Uttar Pradesh Counter Rate (ex-GST)</string>
+    <string name="import_duty_pct">Import Duty % on gold &amp; silver (BCD + AIDC)</string>
+    <string name="rate_premium_pct">Gold: UP local premium % over landed rate</string>
+    <string name="silver_premium_pct">Silver: UP local premium % over landed rate</string>
     <string name="gst_default_on">GST enabled by default</string>
     <string name="app_theme">App Theme</string>
     <string name="theme_gold">Gold</string>

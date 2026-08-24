@@ -62,7 +62,8 @@ it builds and you have created an invoice, force-closed the app, and seen it com
 - Builds cleanly → produces `app-debug.apk` (~6.8 MB)
 
 ### Billing logic (working live)
-- Rate per carat derived from 24K rate (22K = 24K × 22/24, etc.)
+- Rate per carat derived from 24K rate (22K = 24K × 22/24, etc.) — matches goodreturns
+  Lucknow 22K/18K to the rupee
 - Gold value, making charges (**% OR flat ₹/gram**), item total
 - GST 3% split into CGST 1.5% + SGST 1.5%
 - Old-gold exchange deduction, round-off, balance due
@@ -94,18 +95,29 @@ it builds and you have created an invoice, force-closed the app, and seen it com
 - `data/SettingsStore.kt` — shop details, defaults, theme, and the day's metal rates.
   Loaded once at app start via `warmUpBlocking()` so screens can read synchronously.
 
-### Live metal rates (goldprice.dev)
-- `data/remote/GoldPriceApi.kt` — one `/v1/carat` call (all karats, INR/gram) plus one
-  `/v1/spot/XAG-INR-SPOT` call = **2 calls per refresh**.
+### Live metal rates (goldprice.dev → Uttar Pradesh counter rate)
+- `data/remote/GoldPriceApi.kt` — one keyed `/v1/carat` call (all karats, INR/gram) =
+  **1 metered call per refresh**; silver comes from keyless api.gold-api.com + open.er-api
+  FX (goldprice.dev gates XAG on the free tier).
 - `data/remote/RateQuotaStore.kt` — persistent spend ledger for the 1,000 calls/month
-  free tier: monthly cap 960, daily cap 30, 3h auto interval / 15min manual cooldown.
-  Budget lands at ~496 calls/month.
-- `data/RateRepository.kt` — applies the shop's **rate premium %** to spot.
+  free tier: monthly cap 960, daily cap 30, 5h auto interval / 15min manual cooldown.
+  Budget lands at ~150 calls/month.
+- `core/util/IndianRate.kt` — pure derivation `spot × (1 + duty) × (1 + UP premium)`,
+  rounded to whole ₹/g. Unit-tested in `app/src/test/.../IndianRateTest.kt`.
+- `data/RateRepository.kt` — applies it with the Settings values and writes the rate card.
 
-> ⚠️ **The API returns international SPOT, not the Indian counter rate.** On 23 Aug 2026
-> spot 24K was ₹14,161.93/g while Indian retail was ≈ ₹16,780/g — an ~18% gap from import
-> duty, GST and dealer premium. Set *Settings → Local Rate Premium %* or the fetched rate
-> will underprice every bill. The rate stays hand-editable by design.
+> **The API returns international SPOT; the app converts it to the UP counter rate.**
+> Calibrated 25 Aug 2026 against goodreturns.in Lucknow:
+>
+> | metal  | goldprice.dev spot | × duty 15% | × UP premium | app rate | Lucknow published |
+> |--------|-------------------:|-----------:|-------------:|---------:|------------------:|
+> | gold   | ₹14,270.08/g       | ₹16,410.6  | 0%           | ₹16,411  | ₹16,412 (Delhi same) |
+> | silver | ₹211.51/g          | ₹243.2     | 7%           | ₹260     | ₹260 (₹2,60,000/kg) |
+>
+> Duty = BCD 10% + AIDC 5%, in force since 13 May 2026 (was 6%). All three figures are
+> editable under *Settings → Live Rate → Uttar Pradesh Counter Rate*. Rates are **ex-GST**
+> — `Calculations` adds CGST 1.5% + SGST 1.5% on the bill, so GST must never be folded
+> into the premium. The rate card stays hand-editable by design.
 
 **API key:** lives in `local.properties` as `goldApiKey=...` (gitignored) and reaches the
 code via `BuildConfig.GOLD_API_KEY`. **Never hardcode it — this repo is public.**
@@ -211,7 +223,8 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home
 1. [ ] Install Android Studio, let it fetch SDK 34, fix `sdk.dir` in `local.properties`
 2. [ ] `./gradlew :app:assembleDebug` — **fix the first-build errors** (Room/KSP most likely)
 3. [ ] Install on phone, create an invoice, force-close the app, reopen — it must still be there
-4. [ ] Set *Settings → Local Rate Premium %*, then tap **Fetch Live Rate** on the dashboard
+4. [ ] Tap **Fetch Live Rate** on the dashboard — the status line shows the full
+       `spot + duty (+ UP premium)` derivation; compare with goodreturns.in/gold-rates/lucknow.html
 5. [ ] Build `PdfGenerator.kt` → enable Share PDF + Print + WhatsApp PDF attachment
 6. [ ] Add unit tests for `Calculations`, commit, push
 

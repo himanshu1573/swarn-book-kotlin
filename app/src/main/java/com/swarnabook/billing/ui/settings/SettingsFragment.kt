@@ -31,7 +31,9 @@ class SettingsFragment : Fragment() {
         binding.inputShopPhone.setText(s.shopPhone)
         binding.inputGstin.setText(s.gstin)
         binding.inputDefaultMaking.setText(trimNum(s.defaultMakingPct))
+        binding.inputImportDuty.setText(trimNum(s.importDutyPct))
         binding.inputRatePremium.setText(trimNum(s.ratePremiumPct))
+        binding.inputSilverPremium.setText(trimNum(s.silverPremiumPct))
         binding.switchGstDefault.isChecked = s.gstEnabledDefault
         binding.themeGroup.check(
             when (s.theme) {
@@ -56,7 +58,9 @@ class SettingsFragment : Fragment() {
             shopPhone = binding.inputShopPhone.text.toString().trim(),
             gstin = binding.inputGstin.text.toString().trim(),
             defaultMakingPct = binding.inputDefaultMaking.text.toString().toDoubleOrNull() ?: 0.0,
+            importDutyPct = binding.inputImportDuty.text.toString().toDoubleOrNull() ?: 0.0,
             ratePremiumPct = binding.inputRatePremium.text.toString().toDoubleOrNull() ?: 0.0,
+            silverPremiumPct = binding.inputSilverPremium.text.toString().toDoubleOrNull() ?: 0.0,
             gstEnabledDefault = binding.switchGstDefault.isChecked,
             theme = theme
         )
