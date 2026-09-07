@@ -102,10 +102,12 @@ data class InvoiceWithItems(
 }
 
 data class ShopSettings(
-    var shopName: String = "Shri Swarna Jewellers",
-    var shopAddress: String = "Chowk Sarafa Bazaar, Lucknow, Uttar Pradesh",
-    var shopPhone: String = "+91 98765 43210",
-    /** State code 09 = Uttar Pradesh. */
+    // Showroom details match the Anukul Jewellers website (src/data/site.ts).
+    // These are first-run defaults only — the Settings screen overwrites them.
+    var shopName: String = "Anukul Jewellers",
+    var shopAddress: String = "Pansari, Near Govardhani Mata Mandir, Unnao, Uttar Pradesh",
+    var shopPhone: String = "+91 63074 44182",
+    /** State code 09 = Uttar Pradesh. Placeholder — set the real GSTIN in Settings. */
     var gstin: String = "09ABCDE1234F1Z5",
     var defaultMakingPct: Double = 12.0,
     /**

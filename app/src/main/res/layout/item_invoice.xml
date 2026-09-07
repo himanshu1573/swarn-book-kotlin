@@ -2,75 +2,102 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SwarnaBook.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="6dp"
-    style="@style/Widget.SwarnaBook.Card">
+    android:layout_marginVertical="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:contentPadding="14dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/invoiceNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/gold_dark"
+            android:id="@+id/avatar"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_avatar"
+            android:gravity="center"
+            android:textColor="@color/indigo"
+            android:textSize="14sp"
             android:textStyle="bold"
-            android:textSize="13sp"
-            tools:text="INV-001"
+            tools:text="AS"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/customerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/text_primary"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/ink"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:textSize="17sp"
-            android:fontFamily="serif"
             tools:text="Anita Sharma"
-            app:layout_constraintTop_toBottomOf="@id/invoiceNumber"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/avatar"
             app:layout_constraintEnd_toStartOf="@id/grandTotal" />
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/invoiceNumber"
+            style="@style/Text.SwarnaBook.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="12sp"
-            tools:text="29/06/2026"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="3dp"
+            tools:text="INV-001"
             app:layout_constraintTop_toBottomOf="@id/customerName"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/avatar" />
+
+        <TextView
+            android:id="@+id/dot"
+            style="@style/Text.SwarnaBook.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:text="·"
+            android:textColor="@color/text_tertiary"
+            app:layout_constraintTop_toTopOf="@id/invoiceNumber"
+            app:layout_constraintBottom_toBottomOf="@id/invoiceNumber"
+            app:layout_constraintStart_toEndOf="@id/invoiceNumber" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/Text.SwarnaBook.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="29/06/2026"
+            app:layout_constraintTop_toTopOf="@id/invoiceNumber"
+            app:layout_constraintBottom_toBottomOf="@id/invoiceNumber"
+            app:layout_constraintStart_toEndOf="@id/dot" />
 
         <TextView
             android:id="@+id/grandTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_primary"
+            android:textColor="@color/ink"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:textSize="18sp"
             tools:text="₹1,85,400"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/balance"
+            style="@style/Text.SwarnaBook.Pill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="3dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            tools:background="@drawable/bg_pill_due"
             tools:text="Due ₹35,400"
-            tools:background="@color/balance_due"
+            tools:textColor="@color/danger"
             app:layout_constraintTop_toBottomOf="@id/grandTotal"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -1,6 +1,5 @@
 package com.swarnabook.billing.ui.invoiceview
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -53,6 +53,7 @@ class InvoiceViewFragment : Fragment() {
                 Snackbar.LENGTH_LONG).show()
         }
 
+        binding.btnBack.setOnClickListener { findNavController().navigateUp() }
         binding.btnEdit.setOnClickListener {
             val args = Bundle().apply { putLong("invoiceId", invoiceId) }
             findNavController().navigate(R.id.action_invoiceView_to_editInvoice, args)
@@ -97,7 +98,13 @@ class InvoiceViewFragment : Fragment() {
         buildItemRows(inv)
         buildTotals(inv)
 
-        binding.btnMarkPaid.visibility = if (inv.balanceDue > 0) View.VISIBLE else View.GONE
+        val due = inv.balanceDue > 0
+        binding.headerTitle.text = "${getString(R.string.invoice)} #${inv.invoiceNumber}"
+        binding.statusPill.text =
+            if (due) "Due ${CurrencyFormat.rupeesWhole(inv.balanceDue)}" else getString(R.string.status_paid)
+        binding.statusPill.setBackgroundResource(if (due) R.drawable.bg_pill_due else R.drawable.bg_pill_success)
+        binding.statusPill.setTextColor(color(if (due) R.color.danger else R.color.success))
+        binding.btnMarkPaid.visibility = if (due) View.VISIBLE else View.GONE
     }
 
     private fun buildItemRows(inv: Invoice) {
@@ -122,7 +129,7 @@ class InvoiceViewFragment : Fragment() {
                     this.text = text
                     textSize = 12f
                     gravity = grav
-                    setTextColor(Color.parseColor("#1C2B4A"))
+                    setTextColor(color(R.color.ink))
                 })
             }
             binding.itemsContainer.addView(row)
@@ -143,17 +150,17 @@ class InvoiceViewFragment : Fragment() {
         addTotal(getString(R.string.grand_total), CurrencyFormat.rupeesWhole(inv.grandTotal), true)
         addTotal(getString(R.string.amount_paid), CurrencyFormat.rupeesWhole(inv.amountPaid), false)
         if (inv.balanceDue > 0)
-            addTotal(getString(R.string.balance_due), CurrencyFormat.rupeesWhole(inv.balanceDue), true, "#B83030")
+            addTotal(getString(R.string.balance_due), CurrencyFormat.rupeesWhole(inv.balanceDue), true, R.color.danger)
         else
-            addTotal("Status", "PAID", true, "#2A7A3A")
+            addTotal("Status", "PAID", true, R.color.success)
     }
 
-    private fun addTotal(label: String, value: String, bold: Boolean, colorHex: String? = null) {
+    private fun addTotal(label: String, value: String, bold: Boolean, colorRes: Int = R.color.ink) {
         val row = LinearLayout(requireContext()).apply {
             orientation = LinearLayout.HORIZONTAL
             setPadding(0, dp(3), 0, dp(3))
         }
-        val color = Color.parseColor(colorHex ?: "#1C2B4A")
+        val color = color(colorRes)
         row.addView(TextView(requireContext()).apply {
             layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
             text = label
@@ -171,6 +178,7 @@ class InvoiceViewFragment : Fragment() {
     }
 
     private fun dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
+    private fun color(res: Int): Int = ContextCompat.getColor(requireContext(), res)
 
     override fun onDestroyView() {
         super.onDestroyView()

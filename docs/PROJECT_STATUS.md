@@ -56,7 +56,7 @@ it builds and you have created an invoice, force-closed the app, and seen it com
 
 ### Technical foundation
 - **Language/Arch:** Kotlin, MVVM, single-Activity + Navigation Component
-- **UI:** Material Design 3, ViewBinding, RecyclerView, navy/gold/cream theme
+- **UI:** Material Design 3, ViewBinding, RecyclerView, Bachatt-style off-white / indigo theme, Manrope type
 - **Async:** Coroutines · **State:** ViewModel + LiveData
 - **minSdk 26, targetSdk 34**
 - Builds cleanly → produces `app-debug.apk` (~6.8 MB)

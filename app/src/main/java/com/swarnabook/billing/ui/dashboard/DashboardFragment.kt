@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import com.swarnabook.billing.R
+import com.swarnabook.billing.SwarnaBookApp
 import com.swarnabook.billing.core.util.Calculations
 import com.swarnabook.billing.core.util.CurrencyFormat
 import com.swarnabook.billing.data.model.Carat
 import com.swarnabook.billing.databinding.FragmentDashboardBinding
+import com.swarnabook.billing.ui.common.Initials
 import com.swarnabook.billing.ui.common.InvoiceAdapter
 
 class DashboardFragment : Fragment() {
@@ -41,6 +43,15 @@ class DashboardFragment : Fragment() {
         })
         binding.recyclerRecent.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerRecent.adapter = adapter
+
+        // Header: shop name + initials avatar, falling back to the app name.
+        val shopName = SwarnaBookApp.settings.currentSettings().shopName
+            .ifBlank { getString(R.string.app_name) }
+        binding.shopTitle.text = shopName
+        binding.avatarText.text = Initials.of(shopName)
+        binding.btnSeeAll.setOnClickListener {
+            findNavController().navigate(R.id.historyFragment)
+        }
 
         // Seed rate inputs (without re-triggering watchers).
         watchersActive = false
@@ -112,18 +123,20 @@ class DashboardFragment : Fragment() {
         binding.chipGroup.removeAllViews()
         Carat.ALL.forEach { carat ->
             val rate = Calculations.getRateForCarat(carat, gold, silver)
-            binding.chipGroup.addView(makeChip("$carat  ${CurrencyFormat.rupeesWhole(rate)}/g"))
+            binding.chipGroup.addView(makeChip(carat, "$carat  ${CurrencyFormat.rupeesWhole(rate)}/g"))
         }
     }
 
-    private fun makeChip(text: String): Chip = Chip(requireContext()).apply {
+    /** Pill chip; gold carats get the pale-gold fill, silver the grey one. */
+    private fun makeChip(carat: String, text: String): Chip = Chip(requireContext()).apply {
         this.text = text
         isClickable = false
         isCheckable = false
-        setChipBackgroundColorResource(R.color.cream)
-        setTextColor(resources.getColor(R.color.navy, null))
-        chipStrokeWidth = 3f
-        setChipStrokeColorResource(R.color.gold_dark)
+        val gold = carat != Carat.SILVER
+        setChipBackgroundColorResource(if (gold) R.color.gold_pale else R.color.silver_soft)
+        setChipStrokeColorResource(if (gold) R.color.gold else R.color.silver)
+        chipStrokeWidth = resources.displayMetrics.density
+        setTextColor(resources.getColor(R.color.ink, null))
     }
 
     private fun trimNum(v: Double): String =

@@ -4,17 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cream">
+    android:background="@color/bg">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/searchLayout"
+    <TextView
+        android:id="@+id/pageTitle"
+        style="@style/Text.SwarnaBook.PageTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/nav_history"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/pageSubtitle"
+        style="@style/Text.SwarnaBook.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:text="@string/history_subtitle"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/pageTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Pill search + two round icon buttons -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        style="@style/Widget.SwarnaBook.TextInput.Search"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:hint="@string/search_customer"
         app:startIconDrawable="@drawable/ic_search"
-        style="@style/Widget.SwarnaBook.TextInput"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pageSubtitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btnFilter">
 
@@ -29,37 +56,52 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnFilter"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
+        style="@style/Widget.SwarnaBook.IconButton.Outline"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/filter_dates"
+        app:icon="@drawable/ic_history"
+        app:layout_constraintTop_toTopOf="@id/searchLayout"
+        app:layout_constraintBottom_toBottomOf="@id/searchLayout"
+        app:layout_constraintEnd_toStartOf="@id/btnExport" />
+
+    <!-- Exports whatever the search / date filter is currently showing. -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnExport"
+        style="@style/Widget.SwarnaBook.IconButton.Filled"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
-        app:icon="@drawable/ic_history"
-        app:iconTint="@color/navy"
-        app:backgroundTint="@color/gold"
+        android:contentDescription="@string/export_invoices"
+        app:icon="@drawable/ic_export"
         app:layout_constraintTop_toTopOf="@id/searchLayout"
         app:layout_constraintBottom_toBottomOf="@id/searchLayout"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Active date-range filter, shown as a lavender pill; tap clears it -->
     <TextView
         android:id="@+id/filterLabel"
-        android:layout_width="0dp"
+        style="@style/Text.SwarnaBook.Pill"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:textColor="@color/gold_dark"
-        android:textSize="12sp"
-        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_pill_indigo_soft"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="7dp"
+        android:textColor="@color/indigo"
         android:visibility="gone"
+        tools:text="01/06/2026 – 29/06/2026   ✕  (tap to clear)"
         tools:visibility="visible"
-        tools:text="01/06/2026 – 29/06/2026  ✕"
         app:layout_constraintTop_toBottomOf="@id/searchLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHistory"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
         app:layout_constraintTop_toBottomOf="@id/filterLabel"
@@ -74,6 +116,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_invoices_yet"
         android:textColor="@color/text_secondary"
+        android:textSize="13sp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/recyclerHistory"
         app:layout_constraintBottom_toBottomOf="@id/recyclerHistory"

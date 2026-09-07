@@ -15,7 +15,12 @@ object DateFormats {
 
     val invoiceDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("en", "IN"))
 
+    /** Timestamp used in export file names — safe on every filesystem. */
+    private val fileStampFormat: SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy_HHmm", Locale("en", "IN"))
+
     fun today(): String = invoiceDate.format(Date())
+
+    fun fileStamp(): String = fileStampFormat.format(Date())
 
     fun format(millis: Long): String = invoiceDate.format(Date(millis))
 

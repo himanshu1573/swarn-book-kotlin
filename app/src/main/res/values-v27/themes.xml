@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark icons on the white navigation bar (attribute exists from API 27). -->
+    <style name="Theme.SwarnaBook" parent="Base.Theme.SwarnaBook">
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+</resources>

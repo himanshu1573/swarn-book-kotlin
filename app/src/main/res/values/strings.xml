@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SwarnaBook</string>
-    <string name="tagline">Smart Billing for Every Jeweller</string>
+    <string name="app_name">Anukul Jewellers</string>
+    <string name="tagline">Timeless Tradition, Crafted to Perfection</string>
 
     <!-- Bottom nav -->
     <string name="nav_home">Home</string>
@@ -14,18 +14,31 @@
     <string name="gold_24k_rate">24K Gold (₹/g)</string>
     <string name="silver_rate">Silver (₹/g)</string>
     <string name="fetch_live_rate">Fetch Live Rate</string>
-    <string name="recent_invoices">Today\'s Invoices</string>
+    <string name="recent_invoices">Today\'s invoices</string>
+    <string name="see_all">See all</string>
+    <string name="dashboard_subtitle">Jewellery billing</string>
+    <string name="hero_line1">Gold &amp; Silver</string>
+    <string name="hero_line2">counter rates</string>
+    <string name="chip_ex_gst">Ex-GST · UP counter rate</string>
+    <string name="chip_live">Live spot rates</string>
+    <string name="rates_section">Rate per gram</string>
+    <string name="per_carat">Derived per carat</string>
+    <string name="live_rate">Live rate</string>
+    <string name="badge_24k">24K</string>
+    <string name="badge_silver">Ag</string>
     <string name="new_invoice">New Invoice</string>
-    <string name="no_invoices_yet">No invoices yet. Tap + to create one.</string>
+    <string name="no_invoices_yet">No invoices yet. Tap New invoice to create one.</string>
 
     <!-- New invoice -->
-    <string name="customer_details">Customer Details</string>
+    <string name="new_invoice_subtitle">Totals update as you type.</string>
+    <string name="summary">Summary</string>
+    <string name="customer_details">Customer details</string>
     <string name="customer_name">Customer Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="invoice_number">Invoice No.</string>
     <string name="invoice_date">Date</string>
     <string name="items">Items</string>
-    <string name="add_item">+ Add Item</string>
+    <string name="add_item">Add item</string>
     <string name="item_name">Item Name</string>
     <string name="carat">Carat</string>
     <string name="rate_per_g">Rate ₹/g</string>
@@ -46,36 +59,52 @@
     <string name="balance_due">Balance Due</string>
     <string name="notes">Notes (advance, exchange details…)</string>
     <string name="save_invoice">Save Invoice</string>
-    <string name="save_generate_pdf">Save &amp; Generate PDF</string>
+    <string name="save_generate_pdf">Save &amp; PDF</string>
 
     <!-- Invoice view -->
+    <string name="invoice">Invoice</string>
+    <string name="billed_to">Billed to</string>
+    <string name="authorized_signature">Authorized signature</string>
+    <string name="status_paid">Paid</string>
+    <string name="back">Back</string>
     <string name="share_pdf">Share PDF</string>
     <string name="print">Print</string>
     <string name="mark_as_paid">Mark as Paid</string>
     <string name="edit_invoice">Edit</string>
-    <string name="send_whatsapp">Send on WhatsApp</string>
+    <string name="send_whatsapp">WhatsApp</string>
 
     <!-- History -->
+    <string name="history_subtitle">Every bill, searchable.</string>
     <string name="search_customer">Search by customer name</string>
     <string name="filter_dates">Filter by date</string>
     <string name="delete_invoice_q">Delete invoice?</string>
     <string name="delete_invoice_msg">This will permanently remove the invoice.</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="export_invoices">Export invoices</string>
+    <string name="export_nothing">Nothing to export for the current filter.</string>
+    <string name="export_failed">Could not create the export file.</string>
+    <string name="export_ready">%1$d invoice(s) exported to %2$s</string>
+    <string name="export_share_title">Share invoice export</string>
 
     <!-- Settings -->
+    <string name="settings_subtitle">Printed on every bill you make.</string>
+    <string name="shop_profile">Shop profile</string>
+    <string name="billing_defaults">Billing defaults</string>
+    <string name="live_rate_title">Live rate conversion</string>
     <string name="shop_name">Shop Name</string>
     <string name="shop_address">Shop Address</string>
     <string name="gstin">GSTIN</string>
     <string name="default_making_pct">Default Making Charge %</string>
-    <string name="live_rate_section">Live Rate → Uttar Pradesh Counter Rate (ex-GST)</string>
+    <string name="live_rate_section">How the goldprice.dev spot is turned into an Uttar Pradesh counter rate (ex-GST).</string>
     <string name="import_duty_pct">Import Duty % on gold &amp; silver (BCD + AIDC)</string>
     <string name="rate_premium_pct">Gold: UP local premium % over landed rate</string>
     <string name="silver_premium_pct">Silver: UP local premium % over landed rate</string>
     <string name="gst_default_on">GST enabled by default</string>
-    <string name="app_theme">App Theme</string>
+    <string name="app_theme">Appearance</string>
     <string name="theme_gold">Gold</string>
     <string name="theme_light">Light</string>
     <string name="theme_dark">Dark</string>
     <string name="save_settings">Save Settings</string>
+    <string name="settings_saved_hint">Saved on this device and used on every bill.</string>
 </resources>

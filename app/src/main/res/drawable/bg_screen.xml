@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Off-white canvas with the soft violet glow that sits behind Bachatt's hero. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bg" />
+        </shape>
+    </item>
+    <item android:top="-160dp" android:bottom="200dp" android:left="80dp" android:right="-160dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="60%p"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="@color/indigo_glow"
+                android:endColor="@color/indigo_glow_transparent" />
+        </shape>
+    </item>
+</layer-list>

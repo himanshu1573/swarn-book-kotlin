@@ -3,18 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cream">
+    android:background="@color/bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingBottom="24dp">
 
+        <TextView
+            style="@style/Text.SwarnaBook.PageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/nav_settings" />
+
+        <TextView
+            style="@style/Text.SwarnaBook.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="@string/settings_subtitle"
+            android:textSize="13sp" />
+
+        <!-- Shop profile -->
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.SwarnaBook.Card">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -22,16 +41,12 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nav_settings"
-                    android:textColor="@color/text_primary"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:text="@string/shop_profile" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:layout_marginTop="12dp" android:hint="@string/shop_name">
                     <com.google.android.material.textfield.TextInputEditText
@@ -41,9 +56,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/shop_address">
+                    android:layout_marginTop="10dp" android:hint="@string/shop_address">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputShopAddress"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -51,9 +65,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/phone_number">
+                    android:layout_marginTop="10dp" android:hint="@string/phone_number">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputShopPhone"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -61,59 +74,41 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/gstin">
+                    android:layout_marginTop="10dp" android:hint="@string/gstin">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputGstin"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:inputType="textCapCharacters" android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/default_making_pct">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputDefaultMaking"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
+        <!-- Billing defaults -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/live_rate_section"
-                    android:textColor="@color/text_primary"
-                    android:textStyle="bold" />
+                    android:text="@string/billing_defaults" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/import_duty_pct">
+                    android:layout_marginTop="12dp" android:hint="@string/default_making_pct"
+                    app:suffixText="%">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputImportDuty"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/rate_premium_pct">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputRatePremium"
-                        android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:inputType="numberDecimal" android:maxLines="1" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.SwarnaBook.TextInput"
-                    android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" android:hint="@string/silver_premium_pct">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/inputSilverPremium"
+                        android:id="@+id/inputDefaultMaking"
                         android:layout_width="match_parent" android:layout_height="wrap_content"
                         android:inputType="numberDecimal" android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -122,65 +117,140 @@
                     android:id="@+id/switchGstDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/gst_default_on"
-                    android:textColor="@color/text_primary" />
+                    android:textColor="@color/ink"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Live rate conversion -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/app_theme"
-                    android:textColor="@color/text_primary"
-                    android:textStyle="bold" />
+                    android:text="@string/live_rate_title" />
+
+                <TextView
+                    style="@style/Text.SwarnaBook.Caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/live_rate_section" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp" android:hint="@string/import_duty_pct"
+                    app:suffixText="%">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputImportDuty"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" android:hint="@string/rate_premium_pct"
+                    app:suffixText="%">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputRatePremium"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" android:hint="@string/silver_premium_pct"
+                    app:suffixText="%">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputSilverPremium"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:inputType="numberDecimal" android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Appearance -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_theme" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/themeGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:singleSelection="true"
-                    app:selectionRequired="true">
+                    android:layout_marginTop="8dp"
+                    app:chipSpacingHorizontal="8dp"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipGold"
+                        style="@style/Widget.SwarnaBook.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme_gold"
-                        style="@style/Widget.Material3.Chip.Filter" />
+                        android:text="@string/theme_gold" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipLight"
+                        style="@style/Widget.SwarnaBook.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme_light"
-                        style="@style/Widget.Material3.Chip.Filter" />
+                        android:text="@string/theme_light" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipDark"
+                        style="@style/Widget.SwarnaBook.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme_dark"
-                        style="@style/Widget.Material3.Chip.Filter" />
+                        android:text="@string/theme_dark" />
                 </com.google.android.material.chip.ChipGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSaveSettings"
+            style="@style/Widget.SwarnaBook.Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="18dp"
             android:text="@string/save_settings"
-            style="@style/Widget.SwarnaBook.Button.Gold" />
+            app:icon="@drawable/ic_arrow_forward" />
 
         <TextView
+            style="@style/Text.SwarnaBook.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="Settings persist via DataStore in the backend phase."
-            android:textColor="@color/text_secondary"
+            android:text="@string/settings_saved_hint"
             android:textSize="11sp" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

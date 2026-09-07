@@ -1,10 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Launcher foreground: the white AJ monogram from @drawable/ic_logo (the indigo tile
+  itself is @color/ic_launcher_background). Scaled to sit inside the 66dp safe zone
+  so circular and squircle masks never clip the letters.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <group android:translateX="30" android:translateY="30" android:scaleX="1.0" android:scaleY="1.0">
-        <path android:fillColor="#F5C842" android:pathData="M12,8h24l8,10 -20,22 -20,-22z"/>
-        <path android:fillColor="#FFD700" android:pathData="M12,8h24l8,10H4z"/>
-        <path android:strokeColor="#1C2B4A" android:strokeWidth="0.8" android:fillColor="#00000000"
-            android:pathData="M12,8h24l8,10 -20,22 -20,-22z M4,18h40 M16,8l-4,10 12,22 12,-22 -4,-10"/>
+
+    <group android:translateX="24" android:translateY="24"
+        android:scaleX="0.6" android:scaleY="0.6">
+
+        <path android:fillColor="#F5D26E" android:pathData="M50,12 L55.5,19.5 L50,27 L44.5,19.5 Z" />
+
+        <path
+            android:strokeWidth="6"
+            android:strokeColor="#FFFFFF"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:fillColor="#00000000"
+            android:pathData="M27,74 L38,38 L49,74 M32.2,62 L43.8,62 M57,38 L73,38 M65,38 L65,62 C65,70.5 57,72.5 52,67.5" />
     </group>
 </vector>
