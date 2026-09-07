@@ -1,10 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Anukul Jewellers "AJ" monogram on an indigo app tile (the same rounded-square
+  device Bachatt uses for its mark). Letters are stroked paths because
+  VectorDrawable cannot render text; the gold diamond keeps the jeweller cue.
+-->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="120dp" android:height="120dp"
-    android:viewportWidth="48" android:viewportHeight="48">
-    <!-- Diamond / gem mark in gold -->
-    <path android:fillColor="#F5C842" android:pathData="M12,8h24l8,10 -20,22 -20,-22z"/>
-    <path android:fillColor="#FFD700" android:pathData="M12,8h24l8,10H4z"/>
-    <path android:fillColor="#B8860B" android:pathData="M4,18h40l-20,22z M16,8l-4,10 12,22 12,-22 -4,-10z" android:fillAlpha="0.35"/>
-    <path android:strokeColor="#1C2B4A" android:strokeWidth="0.8" android:fillColor="#00000000"
-        android:pathData="M12,8h24l8,10 -20,22 -20,-22z M4,18h40 M16,8l-4,10 12,22 12,-22 -4,-10"/>
+    android:viewportWidth="100" android:viewportHeight="100">
+
+    <!-- Tile -->
+    <path
+        android:fillColor="#5B3DF5"
+        android:pathData="M24,0 H76 A24,24 0 0 1 100,24 V76 A24,24 0 0 1 76,100 H24 A24,24 0 0 1 0,76 V24 A24,24 0 0 1 24,0 Z" />
+    <!-- Soft highlight so the tile does not read flat -->
+    <path
+        android:fillColor="#14FFFFFF"
+        android:pathData="M24,0 H76 A24,24 0 0 1 100,24 V40 Q50,58 0,40 V24 A24,24 0 0 1 24,0 Z" />
+
+    <!-- Gold crest -->
+    <path android:fillColor="#F5D26E" android:pathData="M50,12 L55.5,19.5 L50,27 L44.5,19.5 Z" />
+
+    <!-- A and J -->
+    <path
+        android:strokeWidth="5.5"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"
+        android:pathData="M27,74 L38,38 L49,74 M32.2,62 L43.8,62 M57,38 L73,38 M65,38 L65,62 C65,70.5 57,72.5 52,67.5" />
 </vector>

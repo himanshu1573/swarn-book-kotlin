@@ -1,13 +1,19 @@
 # swarn-book-kotlin
 
-**SwarnaBook** — a native Android jewellery shop billing & invoice app (Kotlin, MVVM, Material 3).
+**Anukul Jewellers** — a native Android billing & invoice app for the Anukul Jewellers
+showroom in Unnao, Uttar Pradesh (Kotlin, MVVM, Material 3).
 
-> *Smart Billing for Every Jeweller*
+> *Timeless Tradition, Crafted to Perfection*
+
+Visual language follows the Bachatt app (bachatt.app): off-white canvas with a soft
+violet glow, white hairline cards, pill-shaped controls, one indigo action colour and
+Manrope type. Gold/silver appear only where the metal is the subject (rate badges,
+the bill's top strip). Tokens live in `res/values/colors.xml` and `themes.xml`.
 
 ## Status
-Frontend phase complete. The data layer (Room + DataStore) is wired into Gradle and
-stubbed behind an in-memory store (`data/SampleData.kt`) so every screen is fully
-clickable. Swapping in Room/DataStore is a drop-in replacement — the screens won't change.
+Frontend and data layer complete: invoices persist in Room, settings and the day's
+rates in DataStore, and metal rates are fetched live from goldprice.dev. PDF generation
+is the remaining piece.
 
 ## Tech
 - Kotlin, single-Activity + Navigation Component
@@ -23,6 +29,7 @@ clickable. Swapping in Room/DataStore is a drop-in replacement — the screens w
 - Old-gold exchange, % or ₹/g making charges, HUID, CGST/SGST split, round-off
 - Free WhatsApp delivery via deep link (zero cost, no Business API needed)
 - Invoice history with search and date-range filter
+- One-tap CSV export of the invoice list (register + line-item detail) to the share sheet
 
 ## Build
 Open in Android Studio, or:
@@ -30,8 +37,6 @@ Open in Android Studio, or:
 ./gradlew :app:assembleDebug
 ```
 
-## Roadmap (backend phase)
-1. Room database (entities, DAOs, AppDatabase)
-2. InvoiceRepository
-3. DataStore-backed settings
-4. PDF generation (`PdfGenerator.kt`) + PrintManager + FileProvider PDF share
+## Roadmap
+1. PDF generation (`PdfGenerator.kt`) + PrintManager + FileProvider PDF share
+2. Attach the generated PDF to the existing WhatsApp share

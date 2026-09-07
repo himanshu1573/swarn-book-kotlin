@@ -2,83 +2,380 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
-      FONTS: Headlines use "serif" (Playfair-Display look) and body uses
-      "sans-serif" (Lato look) so the project builds with zero external setup.
-      To use the EXACT Playfair Display / Lato: in Android Studio do
-      res > New > Font resource file > pick the font (it auto-adds the Google
-      font provider cert array), then point fontFamily below at @font/playfair_display
-      and @font/lato. No other code changes needed.
+      Visual language (after bachatt.app): off-white canvas, white hairline cards,
+      pill-shaped controls, one indigo action colour, Manrope everywhere.
+      Every widget style below is what the layouts reference — change a token here
+      and the whole app follows.
     -->
 
-    <style name="Theme.SwarnaBook" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Brand colors mapped to Material 3 roles -->
-        <item name="colorPrimary">@color/navy</item>
+    <style name="Base.Theme.SwarnaBook" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/indigo</item>
         <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryContainer">@color/navy</item>
-        <item name="colorOnPrimaryContainer">@color/gold</item>
+        <item name="colorPrimaryContainer">@color/indigo_soft</item>
+        <item name="colorOnPrimaryContainer">@color/indigo</item>
 
-        <item name="colorSecondary">@color/gold_dark</item>
-        <item name="colorOnSecondary">@color/navy</item>
-        <item name="colorSecondaryContainer">@color/gold</item>
-        <item name="colorOnSecondaryContainer">@color/navy</item>
+        <item name="colorSecondary">@color/gold_deep</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondaryContainer">@color/gold_pale</item>
+        <item name="colorOnSecondaryContainer">@color/gold_deep</item>
 
-        <item name="android:colorBackground">@color/cream</item>
-        <item name="colorSurface">@color/cream_card</item>
-        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceVariant">@color/surface_soft</item>
+        <item name="colorOnSurface">@color/ink</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
-        <item name="colorError">@color/balance_due</item>
-        <item name="colorOutline">@color/divider</item>
+        <item name="colorOutline">@color/outline</item>
+        <item name="colorOutlineVariant">@color/outline</item>
+        <item name="colorError">@color/danger</item>
 
-        <item name="android:statusBarColor">@color/navy</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/surface</item>
 
-        <!-- Typography -->
-        <item name="textAppearanceHeadlineMedium">@style/Text.Headline</item>
-        <item name="textAppearanceTitleLarge">@style/Text.Title</item>
-        <item name="fontFamily">sans-serif</item>
+        <!-- Typography: Manrope for every Material text role -->
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textViewStyle">@style/Widget.SwarnaBook.TextView</item>
+        <item name="textAppearanceDisplaySmall">@style/Text.SwarnaBook.DisplaySmall</item>
+        <item name="textAppearanceHeadlineMedium">@style/Text.SwarnaBook.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/Text.SwarnaBook.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/Text.SwarnaBook.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/Text.SwarnaBook.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/Text.SwarnaBook.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/Text.SwarnaBook.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/Text.SwarnaBook.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/Text.SwarnaBook.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/Text.SwarnaBook.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/Text.SwarnaBook.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/Text.SwarnaBook.LabelSmall</item>
+
+        <!-- Widget defaults -->
+        <item name="materialCardViewStyle">@style/Widget.SwarnaBook.Card</item>
+        <item name="textInputStyle">@style/Widget.SwarnaBook.TextInput</item>
+        <item name="chipStyle">@style/Widget.SwarnaBook.Chip</item>
+        <item name="bottomNavigationStyle">@style/Widget.SwarnaBook.BottomNav</item>
+        <item name="snackbarStyle">@style/Widget.SwarnaBook.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.SwarnaBook.Snackbar.Text</item>
     </style>
 
-    <!-- Splash uses the same theme; brand splash drawn manually in SplashFragment -->
-    <style name="Theme.SwarnaBook.Splash" parent="Theme.SwarnaBook">
-        <item name="android:statusBarColor">@color/navy</item>
+    <!-- values-v27 adds the light navigation-bar flag on top of this -->
+    <style name="Theme.SwarnaBook" parent="Base.Theme.SwarnaBook" />
+
+    <!-- Splash: same theme; the brand splash is drawn by SplashFragment -->
+    <style name="Theme.SwarnaBook.Splash" parent="Theme.SwarnaBook" />
+
+    <!-- ===================== Text ===================== -->
+
+    <style name="Widget.SwarnaBook.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textColor">@color/ink</item>
     </style>
 
-    <style name="Text.Headline" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="fontFamily">serif</item>
-        <item name="android:fontFamily">serif</item>
+    <style name="Text.SwarnaBook.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/text_primary</item>
     </style>
-
-    <style name="Text.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="fontFamily">serif</item>
-        <item name="android:fontFamily">serif</item>
+    <style name="Text.SwarnaBook.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
         <item name="android:textStyle">bold</item>
     </style>
-
-    <!-- Gold primary button -->
-    <style name="Widget.SwarnaBook.Button.Gold" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@color/gold</item>
-        <item name="android:textColor">@color/navy</item>
+    <style name="Text.SwarnaBook.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
         <item name="android:textStyle">bold</item>
-        <item name="cornerRadius">12dp</item>
+    </style>
+    <style name="Text.SwarnaBook.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Text.SwarnaBook.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Text.SwarnaBook.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Text.SwarnaBook.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+    </style>
+    <style name="Text.SwarnaBook.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+    </style>
+    <style name="Text.SwarnaBook.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+    </style>
+    <style name="Text.SwarnaBook.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="Text.SwarnaBook.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+    <style name="Text.SwarnaBook.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/manrope</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
+    <!-- Reusable text roles for layouts -->
+
+    <!-- Page title, e.g. "History" / "Settings" -->
+    <style name="Text.SwarnaBook.PageTitle" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+    <!-- Hero headline on the dashboard -->
+    <style name="Text.SwarnaBook.Hero" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.03</item>
+        <item name="android:lineSpacingMultiplier">0.95</item>
+    </style>
+    <!-- Card / section title -->
+    <style name="Text.SwarnaBook.SectionTitle" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ink</item>
+    </style>
+    <!-- Small grey caption under titles or above values -->
+    <style name="Text.SwarnaBook.Caption" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <!-- Uppercase eyebrow label, e.g. "BILLED TO" -->
+    <style name="Text.SwarnaBook.Eyebrow" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textColor">@color/text_tertiary</item>
+    </style>
+    <!-- Big money value -->
+    <style name="Text.SwarnaBook.Amount" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+    <!-- Small status pill: "Paid", "Due ₹35,400", "24K" -->
+    <style name="Text.SwarnaBook.Pill" parent="Widget.SwarnaBook.TextView">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- Legacy aliases kept for anything still pointing at them -->
+    <style name="Text.Headline" parent="Text.SwarnaBook.HeadlineMedium" />
+    <style name="Text.Title" parent="Text.SwarnaBook.TitleLarge" />
+
+    <!-- ===================== Buttons ===================== -->
+
+    <!-- Indigo pill, white text: the one primary action on a screen -->
+    <style name="Widget.SwarnaBook.Button.Primary" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/indigo</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconPadding">8dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:minHeight">54dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <!-- White pill with hairline border -->
     <style name="Widget.SwarnaBook.Button.Outline" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:textColor">@color/navy</item>
-        <item name="strokeColor">@color/gold_dark</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="backgroundTint">@color/surface</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="iconTint">@color/ink</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+        <item name="strokeColor">@color/outline</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:minHeight">54dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="cornerRadius">28dp</item>
     </style>
+
+    <!-- Lavender pill, indigo text: secondary/compact actions ("Live rate", "+ Add item") -->
+    <style name="Widget.SwarnaBook.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="backgroundTint">@color/indigo_soft</item>
+        <item name="android:textColor">@color/indigo</item>
+        <item name="iconTint">@color/indigo</item>
+        <item name="iconSize">18dp</item>
+        <item name="iconPadding">6dp</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <!-- Green pill: WhatsApp -->
+    <style name="Widget.SwarnaBook.Button.Success" parent="Widget.SwarnaBook.Button.Primary">
+        <item name="backgroundTint">@color/success</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <!-- Plain indigo text link ("See all") -->
+    <style name="Widget.SwarnaBook.Button.Link" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/indigo</item>
+        <item name="iconTint">@color/indigo</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconSize">16dp</item>
+        <item name="iconPadding">4dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <!-- Round 48dp icon buttons -->
+    <style name="Widget.SwarnaBook.IconButton.Outline" parent="Widget.Material3.Button.IconButton.Outlined">
+        <item name="backgroundTint">@color/surface</item>
+        <item name="iconTint">@color/ink</item>
+        <item name="strokeColor">@color/outline</item>
+        <item name="strokeWidth">1.5dp</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+    <style name="Widget.SwarnaBook.IconButton.Filled" parent="Widget.Material3.Button.IconButton.Filled">
+        <item name="backgroundTint">@color/indigo</item>
+        <item name="iconTint">@color/white</item>
+        <item name="cornerRadius">24dp</item>
+    </style>
+
+    <!-- Extended FAB as an indigo pill -->
+    <style name="Widget.SwarnaBook.Fab" parent="Widget.Material3.ExtendedFloatingActionButton.Primary">
+        <item name="backgroundTint">@color/indigo</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="shapeAppearanceOverlay">@style/Shape.SwarnaBook.Pill</item>
+    </style>
+
+    <style name="Shape.SwarnaBook.Pill" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- ===================== Surfaces ===================== -->
 
     <style name="Widget.SwarnaBook.Card" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardBackgroundColor">@color/cream_card</item>
-        <item name="cardCornerRadius">16dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="contentPadding">16dp</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeColor">@color/outline</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="contentPadding">18dp</item>
+        <item name="rippleColor">@color/indigo_soft</item>
     </style>
 
     <style name="Widget.SwarnaBook.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/gold_dark</item>
-        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="boxBackgroundColor">@color/surface</item>
+        <item name="boxStrokeColor">@color/input_stroke</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="hintTextColor">@color/indigo</item>
+        <item name="android:textColorHint">@color/text_tertiary</item>
+        <item name="startIconTint">@color/text_secondary</item>
+        <item name="endIconTint">@color/text_secondary</item>
+        <item name="prefixTextColor">@color/text_secondary</item>
+        <item name="suffixTextColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Fully rounded search field -->
+    <style name="Widget.SwarnaBook.TextInput.Search">
+        <item name="boxCornerRadiusTopStart">26dp</item>
+        <item name="boxCornerRadiusTopEnd">26dp</item>
+        <item name="boxCornerRadiusBottomStart">26dp</item>
+        <item name="boxCornerRadiusBottomEnd">26dp</item>
+    </style>
+
+    <!-- Read-only pill chip (derived carat rates) -->
+    <style name="Widget.SwarnaBook.Chip" parent="Widget.Material3.Chip.Assist">
+        <item name="chipBackgroundColor">@color/surface</item>
+        <item name="chipStrokeColor">@color/outline</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">18dp</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="android:textColor">@color/ink</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <!-- Selectable chip (theme picker): lavender + indigo when checked -->
+    <style name="Widget.SwarnaBook.Chip.Choice" parent="Widget.Material3.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_choice_bg</item>
+        <item name="chipStrokeColor">@color/chip_choice_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipCornerRadius">18dp</item>
+        <item name="chipMinHeight">36dp</item>
+        <item name="android:textColor">@color/chip_choice_text</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="checkedIconTint">@color/indigo</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+    </style>
+
+    <style name="Widget.SwarnaBook.BottomNav" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+        <item name="itemTextColor">@color/bottom_nav_color</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.SwarnaBook.BottomNav.Indicator</item>
+        <item name="itemTextAppearanceActive">@style/Text.SwarnaBook.LabelMedium</item>
+        <item name="itemTextAppearanceInactive">@style/Text.SwarnaBook.LabelMedium</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="elevation">0dp</item>
+    </style>
+    <style name="Widget.SwarnaBook.BottomNav.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/indigo_soft</item>
+    </style>
+
+    <style name="Widget.SwarnaBook.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="backgroundTint">@color/night</item>
+        <item name="cornerRadius">14dp</item>
+    </style>
+    <style name="Widget.SwarnaBook.Snackbar.Text" parent="Widget.Material3.Snackbar.TextView">
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cream"
+    android:background="@color/bg"
     android:fillViewport="true">
 
     <LinearLayout
@@ -13,12 +13,29 @@
         android:orientation="vertical"
         android:paddingBottom="24dp">
 
+        <TextView
+            style="@style/Text.SwarnaBook.PageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="20dp"
+            android:text="@string/new_invoice" />
+
+        <TextView
+            style="@style/Text.SwarnaBook.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="@string/new_invoice_subtitle"
+            android:textSize="13sp" />
+
         <!-- Customer details -->
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            style="@style/Widget.SwarnaBook.Card">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,20 +43,16 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/customer_details"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="serif" />
+                    android:text="@string/customer_details" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/customer_name"
-                    style="@style/Widget.SwarnaBook.TextInput">
+                    android:layout_marginTop="12dp"
+                    android:hint="@string/customer_name">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputCustomerName"
@@ -52,9 +65,8 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:hint="@string/phone_number"
-                    style="@style/Widget.SwarnaBook.TextInput">
+                    android:layout_marginTop="10dp"
+                    android:hint="@string/phone_number">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputCustomerPhone"
@@ -67,7 +79,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:baselineAligned="false">
 
@@ -75,24 +87,25 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:hint="@string/invoice_number"
-                        style="@style/Widget.SwarnaBook.TextInput">
+                        android:layout_marginEnd="5dp"
+                        android:hint="@string/invoice_number">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inputInvoiceNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="false" />
+                            android:enabled="false"
+                            android:textColor="@color/text_secondary" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="5dp"
                         android:hint="@string/invoice_date"
-                        style="@style/Widget.SwarnaBook.TextInput">
+                        app:endIconDrawable="@drawable/ic_history"
+                        app:endIconMode="custom">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/inputDate"
@@ -110,46 +123,56 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <TextView
+                style="@style/Text.SwarnaBook.SectionTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/items"
-                android:textColor="@color/text_primary"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:fontFamily="serif" />
+                android:textSize="18sp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddItem"
+                style="@style/Widget.SwarnaBook.Button.Tonal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_item"
-                style="@style/Widget.SwarnaBook.Button.Outline" />
+                app:icon="@drawable/ic_add" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:nestedScrollingEnabled="false" />
+            android:layout_marginTop="6dp"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_invoice_row" />
 
-        <!-- Totals -->
+        <!-- Summary -->
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.SwarnaBook.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            style="@style/Widget.SwarnaBook.Card">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.SwarnaBook.SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:text="@string/summary" />
 
                 <include layout="@layout/row_total_line" android:id="@+id/rowGoldValue"
                     android:layout_width="match_parent" android:layout_height="wrap_content" />
@@ -162,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:hint="@string/old_gold_exchange"
-                    style="@style/Widget.SwarnaBook.TextInput">
+                    app:prefixText="₹ ">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputOldGold"
@@ -177,10 +200,11 @@
                     android:id="@+id/switchGst"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
+                    android:checked="true"
                     android:text="@string/gst_3"
-                    android:textColor="@color/text_primary"
-                    android:checked="true" />
+                    android:textColor="@color/ink"
+                    android:textSize="14sp" />
 
                 <include layout="@layout/row_total_line" android:id="@+id/rowCgst"
                     android:layout_width="match_parent" android:layout_height="wrap_content" />
@@ -192,12 +216,13 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="10dp"
-                    android:background="@color/divider" />
+                    android:layout_marginVertical="12dp"
+                    android:background="@color/outline" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
@@ -205,27 +230,25 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/grand_total"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:fontFamily="serif" />
+                        android:textColor="@color/ink"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/textGrandTotal"
+                        style="@style/Text.SwarnaBook.Amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/navy"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
+                        android:textSize="24sp"
                         tools:text="₹1,85,400" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="14dp"
                     android:hint="@string/amount_paid"
-                    style="@style/Widget.SwarnaBook.TextInput">
+                    app:prefixText="₹ ">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/inputAmountPaid"
@@ -238,7 +261,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
@@ -246,9 +270,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/balance_due"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textBalanceDue"
@@ -257,7 +280,7 @@
                         android:textSize="18sp"
                         android:textStyle="bold"
                         tools:text="₹35,400"
-                        tools:textColor="@color/balance_due" />
+                        tools:textColor="@color/danger" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -266,8 +289,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:hint="@string/notes"
-            style="@style/Widget.SwarnaBook.TextInput">
+            android:layout_marginTop="14dp"
+            android:hint="@string/notes">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputNotes"
@@ -280,26 +303,28 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="18dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
+                style="@style/Widget.SwarnaBook.Button.Outline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:text="@string/save_invoice"
-                style="@style/Widget.SwarnaBook.Button.Outline" />
+                android:layout_marginEnd="5dp"
+                android:text="@string/save_invoice" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSavePdf"
+                style="@style/Widget.SwarnaBook.Button.Primary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="6dp"
+                android:layout_weight="1.25"
+                android:layout_marginStart="5dp"
                 android:text="@string/save_generate_pdf"
-                style="@style/Widget.SwarnaBook.Button.Gold" />
+                app:icon="@drawable/ic_arrow_forward" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

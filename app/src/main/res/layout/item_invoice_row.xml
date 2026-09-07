@@ -2,11 +2,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.SwarnaBook.Card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="6dp"
-    style="@style/Widget.SwarnaBook.Card">
+    android:layout_marginVertical="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,15 +17,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="@string/item_name"
-                style="@style/Widget.SwarnaBook.TextInput">
+                android:hint="@string/item_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputItemName"
@@ -37,19 +36,20 @@
 
             <ImageButton
                 android:id="@+id/btnDelete"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_circle_soft"
+                android:contentDescription="@string/delete"
                 android:src="@drawable/ic_delete"
-                android:contentDescription="@string/delete" />
+                app:tint="@color/danger" />
         </LinearLayout>
 
-        <!-- Row: carat spinner + rate (readonly) -->
+        <!-- Row: carat + rate (read-only) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:baselineAligned="false">
 
@@ -57,36 +57,43 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
+                android:layout_marginEnd="5dp"
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/carat"
-                    android:textSize="11sp"
-                    android:textColor="@color/text_secondary" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/carat" />
 
                 <Spinner
                     android:id="@+id/spinnerCarat"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp" />
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_soft_input"
+                    android:paddingHorizontal="8dp"
+                    android:popupBackground="@drawable/bg_popup" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="18dp"
                 android:hint="@string/rate_per_g"
-                style="@style/Widget.SwarnaBook.TextInput">
+                app:prefixText="₹ ">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputRate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:enabled="false"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/ink"
+                    android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -94,7 +101,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
             android:baselineAligned="false">
 
@@ -102,9 +109,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:hint="@string/weight_g"
-                style="@style/Widget.SwarnaBook.TextInput">
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="18dp"
+                android:hint="@string/weight_g">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputWeight"
@@ -118,28 +125,33 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:layout_marginEnd="6dp"
+                android:layout_marginHorizontal="5dp"
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/Text.SwarnaBook.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Making"
-                    android:textSize="11sp"
-                    android:textColor="@color/text_secondary" />
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginStart="4dp"
+                    android:text="Making" />
 
                 <Spinner
                     android:id="@+id/spinnerMakingMode"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp" />
+                    android:layout_height="52dp"
+                    android:background="@drawable/bg_soft_input"
+                    android:paddingHorizontal="8dp"
+                    android:popupBackground="@drawable/bg_popup" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Value"
-                style="@style/Widget.SwarnaBook.TextInput">
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="18dp"
+                android:hint="Value">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/inputMakingValue"
@@ -154,9 +166,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="@string/huid"
-            style="@style/Widget.SwarnaBook.TextInput">
+            android:layout_marginTop="8dp"
+            android:hint="@string/huid">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputHuid"
@@ -166,11 +177,18 @@
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/outline" />
+
         <!-- Row: making amount + item total (computed) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -186,9 +204,9 @@
                 android:id="@+id/textItemTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/ink"
+                android:textSize="17sp"
                 android:textStyle="bold"
-                android:textSize="16sp"
                 tools:text="₹56,058" />
         </LinearLayout>
     </LinearLayout>

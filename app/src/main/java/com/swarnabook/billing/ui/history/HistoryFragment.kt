@@ -6,16 +6,22 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.swarnabook.billing.R
+import com.swarnabook.billing.SwarnaBookApp
 import com.swarnabook.billing.core.util.DateFormats
+import com.swarnabook.billing.core.util.InvoiceExporter
 import com.swarnabook.billing.databinding.FragmentHistoryBinding
 import com.swarnabook.billing.ui.common.InvoiceAdapter
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 
 class HistoryFragment : Fragment() {
 
@@ -49,6 +55,7 @@ class HistoryFragment : Fragment() {
         })
 
         binding.btnFilter.setOnClickListener { showDateRangePicker() }
+        binding.btnExport.setOnClickListener { exportVisibleInvoices() }
         binding.filterLabel.setOnClickListener {
             viewModel.clearDateRange()
             binding.filterLabel.visibility = View.GONE
@@ -77,6 +84,44 @@ class HistoryFragment : Fragment() {
         }
         picker.show(childFragmentManager, "dateRange")
     }
+
+    /**
+     * Writes every invoice currently in the list — i.e. after the search text and date
+     * filter — to one CSV and opens the share sheet. Exporting what is on screen means
+     * "this month's bills" is just a date filter away, with no extra UI.
+     */
+    private fun exportVisibleInvoices() {
+        val invoices = viewModel.results.value.orEmpty()
+        if (invoices.isEmpty()) {
+            toast(getString(R.string.export_nothing))
+            return
+        }
+        binding.btnExport.isEnabled = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Rethrow cancellation: if the view went away mid-write the coroutine must
+            // die here, not fall through and touch a binding that is already null.
+            val file = try {
+                InvoiceExporter.exportToFile(
+                    requireContext(), invoices, SwarnaBookApp.settings.currentSettings()
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                null
+            }
+
+            binding.btnExport.isEnabled = true
+            if (file == null) {
+                toast(getString(R.string.export_failed))
+            } else {
+                toast(getString(R.string.export_ready, invoices.size, file.name))
+                InvoiceExporter.share(requireContext(), file)
+            }
+        }
+    }
+
+    private fun toast(message: String) =
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
 
     private fun confirmDelete(id: Long, number: String) {
         MaterialAlertDialogBuilder(requireContext())

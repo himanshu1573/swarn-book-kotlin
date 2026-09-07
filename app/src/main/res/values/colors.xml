@@ -1,19 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Brand palette -->
-    <color name="navy">#1C2B4A</color>
-    <color name="navy_dark">#13203B</color>
-    <color name="gold">#F5C842</color>
-    <color name="gold_dark">#B8860B</color>
-    <color name="gold_light">#FFD700</color>
-    <color name="cream">#FDF8F0</color>
-    <color name="cream_card">#FFFFFF</color>
-    <color name="balance_due">#B83030</color>
-    <color name="paid_success">#2A7A3A</color>
+    <!--
+      Design tokens. The look follows the Bachatt app (bachatt.app): an off-white
+      canvas with a soft violet glow, white cards with hairline borders, one vivid
+      indigo for every action, and gold/silver used only where the metal itself is
+      the subject (rate badges, the bill's top strip).
+    -->
 
-    <color name="text_primary">#1C2B4A</color>
-    <color name="text_secondary">#5A6478</color>
+    <!-- Canvas & surfaces -->
+    <color name="bg">#F6F6FA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_soft">#F1F1F6</color>
+    <color name="outline">#E4E4EC</color>
+    <color name="night">#14131C</color>
+
+    <!-- Brand action colour -->
+    <color name="indigo">#5B3DF5</color>
+    <color name="indigo_dark">#4A2FD6</color>
+    <color name="indigo_soft">#EEEBFF</color>
+    <color name="indigo_glow">#DED8FF</color>
+    <color name="indigo_glow_transparent">#00DED8FF</color>
+
+    <!-- Text -->
+    <color name="ink">#17162A</color>
+    <color name="text_primary">@color/ink</color>
+    <color name="text_secondary">#6C6B80</color>
+    <color name="text_tertiary">#9C9BAE</color>
+
+    <!-- Status -->
+    <color name="success">#14A36A</color>
+    <color name="success_soft">#E4F6EE</color>
+    <color name="danger">#D9423A</color>
+    <color name="danger_soft">#FCEBEA</color>
+
+    <!-- Metals -->
+    <color name="gold">#E5B33C</color>
+    <color name="gold_bright">#F5D26E</color>
+    <color name="gold_deep">#B98A1C</color>
+    <color name="gold_pale">#FFF3D6</color>
+    <color name="silver">#8E93A3</color>
+    <color name="silver_soft">#EEF0F4</color>
+
+    <!-- Semantic roles used by the screens -->
+    <color name="balance_due">@color/danger</color>
+    <color name="paid_success">@color/success</color>
+    <color name="divider">@color/outline</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="divider">#E3DCCE</color>
 </resources>
